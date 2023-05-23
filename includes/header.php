@@ -44,7 +44,11 @@ include("functions/functions.php");
           <li class="nav-item">
             <a class="nav-link" href="studentprofile.php">Student Profile</a>
           </li>
-        <?php } ?>
+        <?php }else{ ?>
+          <li class="nav-item">
+            Login to access the rest of the site
+          </li>
+          <?php } ?>
       </ul>
     </div>
   </div>

@@ -3,7 +3,7 @@ loggedin_only(); ?>
 
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 mb-4">
             <div class="card text-center">
                 <div class="card-header">
                     <h3>Grade 9</h3>
@@ -14,7 +14,7 @@ loggedin_only(); ?>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mb-4">
             <div class="card text-center">
                 <div class="card-header">
                     <h3>Grade 10</h3>
@@ -25,7 +25,7 @@ loggedin_only(); ?>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mb-4">
             <div class="card text-center">
                 <div class="card-header">
                     <h3>Grade 11</h3>
@@ -36,7 +36,7 @@ loggedin_only(); ?>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mb-4">
             <div class="card text-center">
                 <div class="card-header">
                     <h3>Grade 12</h3>
@@ -49,6 +49,7 @@ loggedin_only(); ?>
         </div>
     </div>
 </div>
+
 
 
 <?php include("includes/footer.php"); ?>

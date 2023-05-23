@@ -97,11 +97,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ?>
 
+<style>
+  input[type="text"]{
+    width: 150px;
+  }
+</style>
+
 <div class="container mt-5">
   <div class="container">
     <div class="row justify-content-center">
-      <div>
+      <div class="col-12 col-md-10 col-lg-12"> <!-- Adjust the column classes to make the form wider -->
         <h1 class="text-center mb-4">Add Students</h1>
+
+        <div class="mb-4"></div> <!-- Add spacing between the CSV file input and the form -->
 
         <form action="#" method="POST" enctype="multipart/form-data">
           <div class="form-group">
@@ -109,14 +117,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="file" class="form-control" id="csvFile" name="csvFile">
           </div>
 
-          <div class="table-responsive">
+          <div class="table-responsive mt-4"> <!-- Add spacing between the CSV file input and the form -->
+            <table class="table table-bordered" id="student-table">
             <table class="table table-bordered" id="student-table">
               <thead>
                 <tr>
-                  <th>Roll No</th>
-                  <th>First Name</th>
-                  <th>Middle Name</th>
-                  <th>Last Name</th>
+                  <th>Roll&nbsp;No</th>
+                  <th>First&nbsp;Name</th>
+                  <th>Middle&nbsp;Name</th>
+                  <th>Last&nbsp;Name</th>
                   <th>DOB</th>
                   <th>Sex</th>
                   <th>Municipality</th>
@@ -129,9 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <tbody>
                 <tr>
                   <td><input type="text" class="form-control" name="rollNo[]"></td>
-                  <td><input type="text" class="form-control" name="firstName[]"></td>
-                  <td><input type="text" class="form-control" name="middleName[]"></td>
-                  <td><input type="text" class="form-control" name="lastName[]"></td>
+                  <td><input type="text" class="form-control" name="firstName[]" ></td>
+                  <td><input type="text" class="form-control" name="middleName[]" ></td>
+                  <td><input type="text" class="form-control" name="lastName[]" style="width: 150px"></td>
                   <td><input type="date" class="form-control" name="dob[]"></td>
                   <td>
                     <select class="form-select" name="sex[]">
@@ -139,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       <option value="female">Female</option>
                     </select>
                   </td>
-                  <td><input type="text" class="form-control" name="municipality[]"></td>
+                  <td><input type="text" class="form-control" name="municipality[]" style="width: 150px"></td>
                   <td>
                     <select class="form-select" name="district[]">
                       <option value="">Select district</option>
@@ -159,9 +168,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </tr>
               </tbody>
             </table>
+            </table>
           </div>
 
-          <div class="text-center">
+          <div class="text-center mt-4"> <!-- Add spacing between the form and the buttons -->
             <button type="button" class="btn btn-primary" id="add-row">Add Row</button>
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>

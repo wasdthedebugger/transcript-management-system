@@ -1,45 +1,84 @@
-<?php include("includes/header.php");
-loggedin_only(); ?>
-
-<!-- handle the submitted form -->
-
 <?php
+include("includes/header.php");
+loggedin_only();
+
 // Assuming you have a database connection established
 
+// Handle the form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // Get the submitted form data
-  $firstNames = $_POST['firstName'];
-  $middleNames = $_POST['middleName'];
-  $lastNames = $_POST['lastName'];
-  $dobs = $_POST['dob'];
-  $sexes = $_POST['sex'];
-  $municipalities = $_POST['municipality'];
-  $districts = $_POST['district'];
-  $provinces = $_POST['province'];
-  $rollNos = $_POST['rollNo'];
-  $joiningDates = $_POST['joiningDate'];
+  // Check if CSV file is uploaded
+  if (isset($_FILES['csvFile']) && $_FILES['csvFile']['error'] === UPLOAD_ERR_OK) {
+    $csvFilePath = $_FILES['csvFile']['tmp_name'];
 
-  // Loop through the submitted form data
-  for ($i = 0; $i < count($firstNames); $i++) {
-    $firstName = $firstNames[$i];
-    $middleName = $middleNames[$i];
-    $lastName = $lastNames[$i];
-    $dob = $dobs[$i];
-    $sex = $sexes[$i];
-    $municipality = $municipalities[$i];
-    $district = $districts[$i];
-    $province = $provinces[$i];
-    $rollNo = $rollNos[$i];
-    $joiningDate = $joiningDates[$i];
+    // Process the CSV file and insert data into the database
+    if (($handle = fopen($csvFilePath, 'r')) !== false) {
+      // Skip the header row
+      fgetcsv($handle);
 
-    // Perform the database insert query
-    $sql = "INSERT INTO students (first_name, middle_name, last_name, dob, sex, municipality, district, province, roll_no, joining_date) VALUES ('$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$rollNo', '$joiningDate')";
+      // Loop through the rows in the CSV file
+      while (($data = fgetcsv($handle)) !== false) {
+        // Extract the data from each row
+        $rollNo = $data[0];
+        $firstName = $data[1];
+        $middleName = $data[2];
+        $lastName = $data[3];
+        $dob = $data[4];
+        $sex = $data[5];
+        $municipality = $data[6];
+        $district = $data[7];
+        $province = $data[8];
+        $joiningDate = $data[9];
 
-    // Execute the query
-    if (mysqli_query($conn, $sql)) {
-      echo "Data inserted successfully.";
+        // Perform the database insert query
+        $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate')";
+
+        // Execute the query
+        if (mysqli_query($conn, $sql)) {
+          success('Data inserted successfully !');
+        } else {
+          fail('Error inserting data !');
+        }
+      }
+
+      fclose($handle);
     } else {
-      echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+      fail('Error opening file !');
+    }
+  } else {
+    // Handle the manually entered form data
+    $rollNos = $_POST['rollNo'];
+    $firstNames = $_POST['firstName'];
+    $middleNames = $_POST['middleName'];
+    $lastNames = $_POST['lastName'];
+    $dobs = $_POST['dob'];
+    $sexes = $_POST['sex'];
+    $municipalities = $_POST['municipality'];
+    $districts = $_POST['district'];
+    $provinces = $_POST['province'];
+    $joiningDates = $_POST['joiningDate'];
+
+    // Loop through the submitted form data
+    for ($i = 0; $i < count($rollNos); $i++) {
+      $rollNo = $rollNos[$i];
+      $firstName = $firstNames[$i];
+      $middleName = $middleNames[$i];
+      $lastName = $lastNames[$i];
+      $dob = $dobs[$i];
+      $sex = $sexes[$i];
+      $municipality = $municipalities[$i];
+      $district = $districts[$i];
+      $province = $provinces[$i];
+      $joiningDate = $joiningDates[$i];
+
+      // Perform the database insert query
+      $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate')";
+
+      // Execute the query
+      if (mysqli_query($conn, $sql)) {
+        success('Data inserted successfully !')
+      } else {
+        fail('Error inserting data !');
+      }
     }
   }
 }
@@ -51,7 +90,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div>
         <h2 class="text-center mb-4">Add Students</h2>
 
-        <form action="#" method="POST">
+        <form action="#" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="csvFile">Upload CSV File</label>
+            <input type="file" class="form-control" id="csvFile" name="csvFile">
+          </div>
+
           <div class="table-responsive">
             <table class="table table-bordered" id="student-table">
               <thead>
@@ -114,8 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </div>
 
-
-
 <script>
   $(document).ready(function() {
     // Delete row when the delete button is clicked
@@ -127,6 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         alert('At least one row must remain.');
       }
     });
+
     // Add new row when the add row button is clicked
     $('#add-row').click(function() {
       var newRow = '<tr>' +
@@ -146,7 +189,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     });
   });
 </script>
-
-
 
 <?php include("includes/footer.php"); ?>

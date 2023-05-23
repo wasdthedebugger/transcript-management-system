@@ -10,7 +10,7 @@ loggedin_only(); ?>
                 </div>
                 <div class="card-body">
                     <p class="card-text">Add your grades for grade 9.</p>
-                    <a href="studentgrades9.php" class="btn btn-primary">Add</a>
+                    <a href="studentgradesadd.php?grade=9" class="btn btn-primary">Add</a>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@ loggedin_only(); ?>
                 </div>
                 <div class="card-body">
                     <p class="card-text">Add your grades for grade 10.</p>
-                    <a href="studentgrades10.php" class="btn btn-primary">Add</a>
+                    <a href="studentgradesadd.php?grade=10" class="btn btn-primary">Add</a>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@ loggedin_only(); ?>
                 </div>
                 <div class="card-body">
                     <p class="card-text">Add your grades for grade 11.</p>
-                    <a href="studentgrades11.php" class="btn btn-primary">Add</a>
+                    <a href="studentgradesadd.php?grade=11" class="btn btn-primary">Add</a>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@ loggedin_only(); ?>
                 </div>
                 <div class="card-body">
                     <p class="card-text">Add your grades for grade 12.</p>
-                    <a href="studentgrades12.php" class="btn btn-primary">Add</a>
+                    <a href="studentgradesadd.php?grade=12" class="btn btn-primary">Add</a>
                 </div>
             </div>
         </div>

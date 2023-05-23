@@ -36,7 +36,8 @@ function is_super_admin()
     }
 }
 
-function username(){
+function username()
+{
     if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
         return $_SESSION['username'];
     } else {
@@ -49,16 +50,36 @@ function username(){
 function superadmin_only()
 {
     if (!is_super_admin()) {
-       header("Location: index.php");
+        header("Location: index.php");
         exit();
     }
 }
 
 // if not logged in, display error page
-function loggedin_only(){
+function loggedin_only()
+{
     if (!loggedin()) {
-         header("Location: index.php");
+        header("Location: index.php");
         exit();
         exit();
     }
 }
+
+function success($message)
+{
+?>
+    <div class="alert alert-success" role="alert">
+        <?php echo $message; ?>
+    </div>
+<?php
+}
+
+function fail($message)
+{
+?>
+    <div class="alert alert-fail" role="alert">
+        <?php echo $message; ?>
+    </div>
+<?php
+}
+?>

@@ -1,21 +1,6 @@
 <?php include("includes/header.php");
 superadmin_only(); ?>
 
-<!-- to create a new user, the action must be dont when logged in as a admin -->
-<?php if (!is_super_admin()) { ?>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-lg-6">
-        <h1>Access Denied !</h1>
-        <h2>This action requires you to be a superadmin</h2>
-      </div>
-    </div>
-  </div>
-<?php
-  exit();
-}
-?>
-
 <?php
 // if submitted, create a new user, should be unique, also, the type of user also must be selected
 if (isset($_POST['username'])) {
@@ -70,11 +55,11 @@ if (isset($_POST['username'])) {
   }
 }
 ?>
-
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-lg-6">
-      <form action="#" method="post">
+      <h1 class="text-center mb-5">Create User</h1>
+      <form action="#" method="post" class="border p-4">
         <!-- username -->
         <div class="form-group">
           <label for="username">Username</label>
@@ -100,8 +85,8 @@ if (isset($_POST['username'])) {
       <br>
       Already have an account? <a href="login.php">Login</a>
     </div>
-
   </div>
 </div>
+
 
 <?php include("includes/footer.php"); ?>

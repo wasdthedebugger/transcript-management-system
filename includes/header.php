@@ -19,32 +19,47 @@ include("functions/functions.php");
   <title>Document</title>
 </head>
 
-<nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-link" id="nav-home-tab" href="index.php" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-
-
-    <?php if (loggedin()) { ?>
-      <!-- student grades -->
-      <a class="nav-link" id="nav-studentgrades-tab" href="studentgrades.php" role="tab" aria-controls="nav-studentgrades" aria-selected="false">Student Grades</a>
-      <a class="nav-link" id="nav-addstudents-tab" href="addstudents.php" role="tab" aria-controls="nav-addstudents" aria-selected="false">Add Students</a>
-      <a class="nav-link" id="nav-studentprofile-tab" href="studentprofile.php" role="tab" aria-controls="nav-studentprofile" aria-selected="false">Student Profile</a>
-    <?php } ?>
-    <!-- if superadmin, show a create user link -->
-
-    <?php if (is_super_admin()) : ?>
-      <a class="nav-link" id="nav-createuser-tab" href="createuser.php" role="tab" aria-controls="nav-createuser" aria-selected="false">Create User</a>
-    <?php endif; ?>
-
-    <div class="btn-group ml-auto" role="group">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="index.php">Home</a>
+    <div class="navbar-toggler-wrapper d-flex justify-content-end">
       <?php if (isset($_SESSION['username'])) : ?>
         <a href="logout.php" class="btn btn-danger m-1">Logout</a>
       <?php else : ?>
         <a href="login.php" class="btn btn-primary m-1">Login</a>
       <?php endif; ?>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <?php if (loggedin()) { ?>
+          <li class="nav-item">
+            <a class="nav-link" href="studentgrades.php">Student Grades</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="addstudents.php">Add Students</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="studentprofile.php">Student Profile</a>
+          </li>
+        <?php } ?>
+      </ul>
     </div>
   </div>
 </nav>
+
+
+
+
+<!-- Add the following JavaScript files at the end of your HTML body -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
 <body>
   

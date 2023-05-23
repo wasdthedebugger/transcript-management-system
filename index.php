@@ -5,14 +5,11 @@
     <!-- welcome the user -->
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <h1><?php echo "Welcome " . username() . " !"; ?> </h1>
-                <!-- show their power -->
-                <?php
-                echo usertype();
-                ?>
-            </div>
+            <h1><?php echo "Welcome " . username() . " !"; ?> </h1>
         </div>
+        <p class="row justify-content-center"><?php
+        echo usertype();
+        ?></p>
     </div>
 <?php } else { ?>
     <div class="container mt-5">

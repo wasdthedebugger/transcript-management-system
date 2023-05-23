@@ -95,15 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-fail("Error: No data received !");
-
 ?>
 
 <div class="container mt-5">
   <div class="container">
     <div class="row justify-content-center">
       <div>
-        <h2 class="text-center mb-4">Add Students</h2>
+        <h1 class="text-center mb-4">Add Students</h1>
 
         <form action="#" method="POST" enctype="multipart/form-data">
           <div class="form-group">

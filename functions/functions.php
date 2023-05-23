@@ -49,16 +49,7 @@ function username(){
 function superadmin_only()
 {
     if (!is_super_admin()) {
-        ?>
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <h1>Access Denied !</h1>
-                    <h2>This action requires you to be a superadmin</h2>
-                </div>
-            </div>
-        </div>
-        <?php
+       header("Location: index.php");
         exit();
     }
 }
@@ -66,16 +57,8 @@ function superadmin_only()
 // if not logged in, display error page
 function loggedin_only(){
     if (!loggedin()) {
-        ?>
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <h1>Access Denied !</h1>
-                    <h2>This action requires you to be logged in</h2>
-                </div>
-            </div>
-        </div>
-        <?php
+         header("Location: index.php");
+        exit();
         exit();
     }
 }

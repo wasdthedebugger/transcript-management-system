@@ -1,0 +1,6 @@
+# Disable directory browsing
+Options -Indexes
+
+# Deny access to specific directories
+RewriteEngine On
+RewriteRule ^(actions|assets|functions|gradeforms|includes)/ - [F]

@@ -22,11 +22,7 @@ if (isset($_POST['email'])) {
     $_SESSION['user_type'] = $row['user_type'];
     header("Location: index.php");
   } else {
-?>
-    <div class="alert alert-danger" role="alert">
-      Invalid Username or Password !
-    </div>
-<?php
+    fail("Invalid email or password");
   }
 }
 

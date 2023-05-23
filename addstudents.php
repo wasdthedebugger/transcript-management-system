@@ -33,10 +33,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate')";
 
         // Execute the query
-        if (mysqli_query($conn, $sql)) {
+        try {
+          mysqli_query($conn, $sql);
           success('Data inserted successfully !');
-        } else {
-          fail('Error inserting data !');
+        } catch (mysqli_sql_exception $e) {
+          $error = $e->getMessage();
+          if (strpos($error, 'Duplicate entry') !== false) {
+            fail('Duplicate entry: The data already exists in the database.');
+          } else {
+            fail('Error inserting data: ' . $error);
+          }
         }
       }
 
@@ -74,14 +80,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate')";
 
       // Execute the query
-      if (mysqli_query($conn, $sql)) {
-        success('Data inserted successfully !')
-      } else {
-        fail('Error inserting data !');
+      try {
+        mysqli_query($conn, $sql);
+        success('Data inserted successfully !');
+      } catch (mysqli_sql_exception $e) {
+        $error = $e->getMessage();
+        if (strpos($error, 'Duplicate entry') !== false) {
+          fail("Duplicate entry: The data already exists in the database.");
+        } else {
+          fail('Error inserting data: ' . $error);
+        }
       }
     }
   }
 }
+
+fail("Error: No data received !");
+
 ?>
 
 <div class="container mt-5">

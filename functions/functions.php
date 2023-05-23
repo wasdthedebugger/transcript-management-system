@@ -77,7 +77,7 @@ function success($message)
 function fail($message)
 {
 ?>
-    <div class="alert alert-fail" role="alert">
+    <div class="alert alert-danger" role="alert">
         <?php echo $message; ?>
     </div>
 <?php

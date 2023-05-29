@@ -39,6 +39,9 @@ include("functions/functions.php");
             <a class="nav-link" href="studentgrades.php">Student Grades</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="createuser.php">Create User</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="addstudents.php">Add Students</a>
           </li>
           <li class="nav-item">
@@ -46,7 +49,7 @@ include("functions/functions.php");
           </li>
         <?php }else{ ?>
           <li class="nav-item">
-            Login to access the rest of the site
+            Login to view more
           </li>
           <?php } ?>
       </ul>

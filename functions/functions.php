@@ -82,4 +82,10 @@ function fail($message)
     </div>
 <?php
 }
-?>
+
+
+function isValidRollNumber($rollNumber)
+{
+    return preg_match('/^\d{4}[A-Z]$/', $rollNumber);
+}
+

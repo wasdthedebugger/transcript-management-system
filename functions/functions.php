@@ -108,11 +108,47 @@ function entryFieldsGrade($tableName, $conn) {
             }
         }
     } else {
-        echo "No subjects found in the table.";
+        fail("No subjects found");
         return;
     }
 
-    // Fetch student roll numbers and marks from the specified table
+    // Fetch student roll numbers from the "students" table
+    $sql = "SELECT roll_no FROM students";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        echo "Error fetching student roll numbers: " . mysqli_error($conn);
+        return;
+    }
+
+    if (mysqli_num_rows($result) > 0) {
+        $rollNumbers = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rollNumber = $row['roll_no'];
+            $rollNumbers[] = $rollNumber;
+
+            // Check if the student already has a record in the grade table
+            $sql = "SELECT roll_no FROM $tableName WHERE roll_no = '$rollNumber'";
+            $existingResult = mysqli_query($conn, $sql);
+            if (!$existingResult) {
+                echo "Error checking existing records: " . mysqli_error($conn);
+                return;
+            }
+            if (mysqli_num_rows($existingResult) === 0) {
+                // If the student does not have a record, insert a new row with default values
+                $defaultValues = array_fill_keys(array_keys($columns), '');
+                $defaultValues['roll_no'] = $rollNumber;
+                $values = implode("', '", $defaultValues);
+                $sql = "INSERT INTO $tableName (`" . implode('`, `', array_keys($defaultValues)) . "`) VALUES ('$values')";
+                mysqli_query($conn, $sql);
+            }
+        }
+    } else {
+        fail("No students found in the database.");
+        return;
+    }
+
+    // Fetch marks data from the specified table
     $sql = "SELECT roll_no, " . implode(', ', array_keys($columns)) . " FROM $tableName";
     $result = mysqli_query($conn, $sql);
 
@@ -124,7 +160,7 @@ function entryFieldsGrade($tableName, $conn) {
             $marksData[$rollNumber] = $row;
         }
     } else {
-        echo '<div>No students found.</div>';
+        fail("No data found in the table.");
         return;
     }
 
@@ -163,14 +199,17 @@ function entryFieldsGrade($tableName, $conn) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($marksData as $rollNumber => $marks) { ?>
+                        <?php foreach ($rollNumbers as $rollNumber) { ?>
                             <tr>
-                                <td><input type="hidden" name="rollNumber[]" value="<?php echo $rollNumber; ?>"><?php echo $rollNumber; ?></td>
+                                <td>
+                                    <input type="hidden" name="rollNumber[]" value="<?php echo $rollNumber; ?>">
+                                    <?php echo $rollNumber; ?>
+                                </td>
                                 <?php foreach ($columns as $column => $dataType) { ?>
                                     <td>
                                         <?php
                                         $inputType = ($dataType == 'float') ? 'number' : 'text';
-                                        $value = isset($marks[$column]) ? $marks[$column] : '';
+                                        $value = isset($marksData[$rollNumber][$column]) ? $marksData[$rollNumber][$column] : '';
                                         ?>
                                         <input type="<?php echo $inputType; ?>" step="0.01" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>" value="<?php echo $value; ?>">
                                     </td>

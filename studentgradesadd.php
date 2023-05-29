@@ -4,26 +4,22 @@
 
 loggedin_only();
 
-// get the grade from the URL
-if (isset($_GET['grade'])) {
-    $grade = $_GET['grade'];
-} else {
-    header("Location: studentgrades.php");
-}
-
 ?>
 
 <!-- grade specific forms and SQL -->
 <?php
-$sql = "SELECT roll_no from students";
-$result = mysqli_query($conn, $sql);
-$roll_nos = mysqli_fetch_all($result, MYSQLI_ASSOC);
-mysqli_free_result($result);
 
-include("gradeforms/grade".$grade.".php");
-
+// if grade is selected and option is selected include the grade form
+if (isset($_GET['grade']) && isset($_GET['option'])) {
+    $grade = $_GET['grade'];
+    $option = $_GET['option'];
+    include("gradeforms/grade" . $grade . $option . ".php");
+}else if (isset($_GET['grade'])) {
+    $grade = $_GET['grade'];
+    include("gradeforms/grade" . $grade . ".php");
+}else{
+    header("Location: studentgrades.php");
+}
 ?>
-
-
 
 <?php include("includes/footer.php"); ?>

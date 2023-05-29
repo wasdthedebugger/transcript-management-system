@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Execute the query
         try {
           mysqli_query($conn, $sql);
-          success('Data inserted successfully !');
+          success('Data inserted successfully!');
         } catch (mysqli_sql_exception $e) {
           $error = $e->getMessage();
           if (strpos($error, 'Duplicate entry') !== false) {
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       fclose($handle);
     } else {
-      fail('Error opening file !');
+      fail('Error opening file!');
     }
   } else {
     // Handle the manually entered form data
@@ -92,11 +92,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       // Execute the query
       try {
         mysqli_query($conn, $sql);
-        success('Data inserted successfully !');
+        success('Data inserted successfully!');
       } catch (mysqli_sql_exception $e) {
         $error = $e->getMessage();
         if (strpos($error, 'Duplicate entry') !== false) {
-          fail("Duplicate entry: The data already exists in the database.");
+          fail('Duplicate entry: The data already exists in the database.');
         } else {
           fail('Error inserting data: ' . $error);
         }
@@ -106,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
+
 
 <style>
   input[type="text"] {

@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Prepare the SQL statement to insert or update marks in the nine_neb table
-    $sql = "INSERT INTO nine_neb (roll_no, nepali, english, maths, social, hpe, omaths, computer, economics, geography, gpa) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    $sql = "INSERT INTO eleven_neb (roll_no, nepali, english, maths, social, hpe, omaths, computer, economics, geography, gpa) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE nepali = VALUES(nepali), english = VALUES(english), maths = VALUES(maths), social = VALUES(social), hpe = VALUES(hpe), omaths = VALUES(omaths), computer = VALUES(computer), economics = VALUES(economics), geography = VALUES(geography), gpa = VALUES(gpa)";
 
     // Prepare the statement

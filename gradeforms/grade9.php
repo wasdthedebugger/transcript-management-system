@@ -8,14 +8,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Prepare the SQL statement to insert or update marks in the nine_neb table
-    $sql = "INSERT INTO nine_neb (roll_no, nepali, english, maths, social, hpe, omaths, computer, economics, geography) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ON DUPLICATE KEY UPDATE nepali = VALUES(nepali), english = VALUES(english), maths = VALUES(maths), social = VALUES(social), hpe = VALUES(hpe), omaths = VALUES(omaths), computer = VALUES(computer), economics = VALUES(economics), geography = VALUES(geography)";
+    $sql = "INSERT INTO nine_neb (roll_no, nepali, english, maths, social, hpe, omaths, computer, economics, geography, gpa) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE nepali = VALUES(nepali), english = VALUES(english), maths = VALUES(maths), social = VALUES(social), hpe = VALUES(hpe), omaths = VALUES(omaths), computer = VALUES(computer), economics = VALUES(economics), geography = VALUES(geography), gpa = VALUES(gpa)";
 
     // Prepare the statement
     $stmt = mysqli_prepare($conn, $sql);
 
     // Bind the parameters
-    mysqli_stmt_bind_param($stmt, "siiiiiiiii", $rollNumber, $nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography);
+    mysqli_stmt_bind_param($stmt, "siiiiiiiiid", $rollNumber, $nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography, $gpa);
 
     // Loop through the submitted form data
     foreach ($_POST['rollNumber'] as $rollNumber) {
@@ -29,6 +29,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $economics = $_POST['economics'][$rollNumber];
         $geography = $_POST['geography'][$rollNumber];
 
+        // Calculate the final grade as the average of all subjects
+        $subjects = array($nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography);
+        $grades = array();
+        $count = 0;
+        
+        foreach ($subjects as $subject) {
+            if ($subject !== "") {
+                $grades[] = $subject;
+                $count++;
+            }
+        }
+        
+        $gpa = null;
+        if ($count > 0) {
+            $gpa = array_sum($grades) / $count;
+        }
+
+
         // Execute the statement
         mysqli_stmt_execute($stmt);
     }
@@ -41,4 +59,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 entryFieldsGrade('nine_neb', $conn);
-?>

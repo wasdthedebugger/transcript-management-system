@@ -15,6 +15,8 @@ include("functions/functions.php");
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- bootstrap cdn -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <!-- refresh on form submit and such -->
+  
 
   <title>Document</title>
 </head>

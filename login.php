@@ -1,5 +1,4 @@
 <?php include("includes/header.php"); ?>
-<?php require("includes/conn.php"); ?>
 
 <?php
 

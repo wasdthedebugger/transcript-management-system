@@ -96,4 +96,3 @@ function generateStudentPDF($rollNo, $conn) {
 // Usage example:
 $rollNo = $_GET['roll_no']; // Assuming you pass the roll number as a parameter
 generateStudentPDF($rollNo, $conn);
-?>

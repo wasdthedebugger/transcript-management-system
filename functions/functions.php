@@ -61,7 +61,6 @@ function loggedin_only()
     if (!loggedin()) {
         header("Location: index.php");
         exit();
-        exit();
     }
 }
 
@@ -90,6 +89,9 @@ function isValidRollNumber($rollNumber)
 }
 
 function entryFieldsGrade($tableName, $conn) {
+
+    $success_count = 0;
+    $fail_count = 0;
     // Connect to the database
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
@@ -166,6 +168,7 @@ function entryFieldsGrade($tableName, $conn) {
 
     // Handle form submission and update database
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
         $rollNumbers = $_POST['rollNumber'];
         foreach ($rollNumbers as $rollNumber) {
             foreach ($columns as $column => $dataType) {
@@ -175,7 +178,11 @@ function entryFieldsGrade($tableName, $conn) {
                 }
                 // Update the database with the new value
                 $sql = "UPDATE $tableName SET $column = $value WHERE roll_no = '$rollNumber'";
-                mysqli_query($conn, $sql);
+                if(mysqli_query($conn, $sql)){
+                    $success_count +=1;
+                } else{
+                    $fail_count +=1;
+                }
             }
         }
         // Redirect to the same page to display updated data
@@ -186,10 +193,11 @@ function entryFieldsGrade($tableName, $conn) {
     // Generate the form table
     ?>
     <div class="container mt-5">
-        <div style="overflow-x: auto; width: 100%;">
+        <div>
             <h1 align="center" class="mb-5"><?php echo $tableName; ?></h1>
             <form action="#" method="POST">
-                <table class="table">
+            <div class="table-responsive mb-4"> 
+            <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Roll Number</th>
@@ -218,6 +226,7 @@ function entryFieldsGrade($tableName, $conn) {
                         <?php } ?>
                     </tbody>
                 </table>
+                </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>

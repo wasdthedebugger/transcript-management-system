@@ -1,6 +1,7 @@
 <?php
 
 $table_name = "nine_neb";
+
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -49,9 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Calculate the GPA
         if ($count > 0) {
-            $gpa = array_sum($grades) / $count;
+            if (in_array(0, $grades)) {
+                $gpa = 0; // Set GPA to 0 if any subject grade is 0
+            } else {
+                $gpa = array_sum($grades) / $count;
+            }
         } else {
-            $gpa = null;
+            $gpa = 0; // Set GPA to 0 if no subjects are passed
         }
 
         // Execute the statement

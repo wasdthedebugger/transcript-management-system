@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_stmt_close($stmt);
 
     // Redirect to a success page or display a success message
-    success('Marks inserted successfully!');
+    echo('Marks inserted successfully!');
 }
 
 entryFieldsGrade($table_name, $conn);

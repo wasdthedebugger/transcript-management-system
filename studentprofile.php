@@ -1,10 +1,11 @@
-<?php require('includes/header.php'); ?>
+<?php require('includes/header.php');
+loggedin_only(); ?>
+
 <div id="notice"></div>
 <div class="container mt-5">
     <h1 class="mb-4" align="center">Student Profile</h1>
 
     <?php
-    require('includes/conn.php');
 
     // Fetch all roll numbers from the students table
     $rollNumberQuery = "SELECT roll_no FROM students";

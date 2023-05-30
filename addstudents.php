@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="table-responsive mt-4"> <!-- Add spacing between the CSV file input and the form -->
             <table class="table table-bordered" id="student-table">
               <table class="table table-bordered" id="student-table">
-                <thead>
+                <thead> 
                   <tr>
                     <th>Roll&nbsp;No</th>
                     <th>First&nbsp;Name</th>

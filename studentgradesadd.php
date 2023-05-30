@@ -1,9 +1,6 @@
-<?php include("includes/header.php"); ?>
-
 <?php
-
+include("includes/header.php");
 loggedin_only();
-
 ?>
 
 <!-- grade specific forms and SQL -->
@@ -14,10 +11,10 @@ if (isset($_GET['grade']) && isset($_GET['option'])) {
     $grade = $_GET['grade'];
     $option = $_GET['option'];
     include("gradeforms/grade" . $grade . $option . ".php");
-}else if (isset($_GET['grade'])) {
+} else if (isset($_GET['grade'])) {
     $grade = $_GET['grade'];
     include("gradeforms/grade" . $grade . ".php");
-}else{
+} else {
     header("Location: studentgrades.php");
 }
 ?>

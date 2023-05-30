@@ -23,3 +23,9 @@ if (isset($_GET['grade']) && isset($_GET['option'])) {
 ?>
 
 <?php include("includes/footer.php"); ?>
+
+<style>
+    input[type="number"] {
+        width: 70px;
+    }
+</style>

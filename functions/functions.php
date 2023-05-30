@@ -187,7 +187,7 @@ function entryFieldsGrade($tableName, $conn) {
     ?>
     <div class="container mt-5">
         <div style="overflow-x: auto; width: 100%;">
-            <h2><?php echo $tableName; ?></h2>
+            <h1 align="center" class="mb-5"><?php echo $tableName; ?></h1>
             <form action="#" method="POST">
                 <table class="table">
                     <thead>
@@ -226,4 +226,34 @@ function entryFieldsGrade($tableName, $conn) {
 
     // Close the database connection
     mysqli_close($conn);
+}
+
+
+function getTotalStudents($conn) {
+    // Perform the database query to count the total number of students
+    // and return the result
+    $query = "SELECT COUNT(*) AS total_students FROM students";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    return $row['total_students'];
+}
+
+// Function to get the number of passed students
+function getPassedStudents($conn) {
+    // Perform the database query to count the number of students with GPA higher than 0
+    // and return the result
+    $query = "SELECT COUNT(*) AS passed_students FROM twelve_neb WHERE gpa > 0";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    return $row['passed_students'];
+}
+
+// Function to get the number of failed students
+function getFailedStudents($conn) {
+    // Perform the database query to count the number of students with GPA equal to 0
+    // and return the result
+    $query = "SELECT COUNT(*) AS failed_students FROM twelve_neb WHERE gpa = 0";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    return $row['failed_students'];
 }

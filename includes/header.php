@@ -18,7 +18,7 @@ include("functions/functions.php");
   <!-- refresh on form submit and such -->
   
 
-  <title>Document</title>
+  <title>TMS</title>
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

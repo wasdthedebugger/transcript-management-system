@@ -1,63 +1,99 @@
 <?php
+
 require('fpdf/fpdf.php');
+require('includes/conn.php');
+require('functions/functions.php');
 
-// Sample data for the mark sheet
-$studentName = 'John Doe';
-$rollNumber = '101';
-$subjectNames = ['Mathematics', 'Science', 'English'];
-$marks = [90, 85, 92];
-$totalMarks = array_sum($marks);
-$percentage = ($totalMarks / (count($subjectNames) * 100)) * 100;
+function generateStudentPDF($rollNo, $conn) {
+    // Create a new PDF object
+    $pdf = new FPDF('P', 'mm', 'A4');
+    $pdf->AddPage();
 
-// Create a new PDF document
-$pdf = new FPDF();
+    // Set font and cell padding
+    $pdf->SetFont('Arial', '', 10);
+    $cellWidth = 40;
+    $cellHeight = 8;
+    $cellPadding = 2;
 
-// Add a page to the PDF
-$pdf->AddPage();
+    // Set colors
+    $headerColor = array(100, 100, 100); // Dark gray
+    $rowColors = array(array(230, 230, 230), array(255, 255, 255)); // Light gray and white
 
-// Set the font and font size
-$pdf->SetFont('Arial', 'B', 14);
+    // Retrieve the student information based on the roll number
+    $studentQuery = "SELECT roll_no, first_name, middle_name, last_name FROM students WHERE roll_no = '$rollNo'";
+    $studentResult = mysqli_query($conn, $studentQuery);
 
-// Title
-$pdf->Cell(0, 10, 'Mark Sheet', 0, 1, 'C');
+    // Check if the student exists
+    if (mysqli_num_rows($studentResult) > 0) {
+        $studentRow = mysqli_fetch_assoc($studentResult);
+        $rollNo = $studentRow['roll_no'];
+        $firstName = $studentRow['first_name'];
+        $middleName = $studentRow['middle_name'];
+        $lastName = $studentRow['last_name'];
 
-// Line break
-$pdf->Ln(10);
+        // Set student details
+        $pdf->SetFont('Arial', 'B', 12);
+        if ($middleName) {
+            $pdf->Cell(0, $cellHeight, $firstName . '_' . $middleName . '_' . $lastName, 0, 1, 'C');
+        } else {
+            $pdf->Cell(0, $cellHeight, $firstName . '_' . $lastName, 0, 1, 'C');
+        }
+        $pdf->Ln();
 
-// Student details
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(50, 10, 'Student Name: ');
-$pdf->Cell(0, 10, $studentName, 0, 1);
+        // Loop through each grade level
+        $gradeLevels = ['nine_neb', 'ten_neb', 'eleven_neb', 'twelve_neb'];
+        foreach ($gradeLevels as $index => $gradeLevel) {
+            // Retrieve the grades for the current grade level and student
+            $gradeQuery = "SELECT * FROM " . $gradeLevel . " WHERE roll_no = '$rollNo'";
+            $gradeResult = mysqli_query($conn, $gradeQuery);
 
-$pdf->Cell(50, 10, 'Roll Number: ');
-$pdf->Cell(0, 10, $rollNumber, 0, 1);
+            // Check if there are grades for the current grade level
+            if (mysqli_num_rows($gradeResult) > 0) {
+                // Set the grade level as the section heading
+                if ($index % 2 === 0) {
+                    $pdf->SetX(10);
+                } else {
+                    $pdf->SetX(110);
+                }
+                $pdf->SetFont('Arial', 'B', 10);
+                $pdf->Cell($cellWidth * 2, $cellHeight, 'Grade Level: ' . $gradeLevel, 0, 1, 'L');
 
-$pdf->Ln(5);
+                // Create the header row for subjects
+                $pdf->SetFont('Arial', 'B', 10);
+                $pdf->SetX($pdf->GetX());
+                $pdf->SetFillColor($headerColor[0], $headerColor[1], $headerColor[2]);
+                $pdf->Cell($cellWidth, $cellHeight, 'Subject', 1, 0, 'C', true);
+                $pdf->Cell($cellWidth, $cellHeight, 'Grade', 1, 1, 'C', true);
 
-// Mark details
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(80, 10, 'Subject', 1);
-$pdf->Cell(40, 10, 'Marks', 1, 0, 'C');
-$pdf->Cell(40, 10, 'Out of', 1, 0, 'C');
-$pdf->Ln();
+                // Loop through each grade record
+                $rowColorIndex = 0;
+                while ($gradeRow = mysqli_fetch_assoc($gradeResult)) {
+                    // Loop through the columns (subjects and grades)
+                    foreach ($gradeRow as $column => $value) {
+                        if ($column === 'roll_no') {
+                            continue; // Skip the roll_no column
+                        }
+                        if ($column === 'gpa' && $value === null) {
+                            $value = 'N/A'; // Display "N/A" if GPA is null
+                        }
+                        $pdf->SetFont('Arial', '', 10);
+                        $pdf->SetX($pdf->GetX());
+                        $pdf->SetFillColor($rowColors[$rowColorIndex % 2][0], $rowColors[$rowColorIndex % 2][1], $rowColors[$rowColorIndex % 2][2]);
+                        $pdf->Cell($cellWidth, $cellHeight, $column, 1, 0, 'C', true);
+                        $pdf->Cell($cellWidth, $cellHeight, $value, 1, 1, 'C', true);
+                    }
+                    $rowColorIndex++;
+                }
+                $pdf->Ln();
+            }
+        }
 
-$pdf->SetFont('Arial', '', 12);
-foreach ($subjectNames as $index => $subject) {
-    $pdf->Cell(80, 10, $subject, 1);
-    $pdf->Cell(40, 10, $marks[$index], 1, 0, 'C');
-    $pdf->Cell(40, 10, '100', 1, 0, 'C');
-    $pdf->Ln();
+        // Output the PDF with the roll number and "_studentprofile" suffix
+        $pdf->Output($rollNo ."_". $firstName . '_studentprofile.pdf', 'I');
+    } 
 }
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(80, 10, 'Total', 1);
-$pdf->Cell(40, 10, $totalMarks, 1, 0, 'C');
-$pdf->Cell(40, 10, count($subjectNames) * 100, 1, 0, 'C');
-$pdf->Ln();
-
-$pdf->Cell(80, 10, 'Percentage', 1);
-$pdf->Cell(80, 10, number_format($percentage, 2) . '%', 1, 0, 'C');
-
-// Output the PDF
-$pdf->Output();
+// Usage example:
+$rollNo = $_GET['roll_no']; // Assuming you pass the roll number as a parameter
+generateStudentPDF($rollNo, $conn);
 ?>

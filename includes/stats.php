@@ -6,15 +6,15 @@
       <div class="row">
         <div class="col">
           <h4>Total Students</h4>
-          <p class="card-text">250</p>
+          <p class="card-text"><?php echo getTotalStudents($conn); ?></p>
         </div>
         <div class="col">
           <h4>Passed Students</h4>
-          <p class="card-text">200</p>
+          <p class="card-text"><?php echo getPassedStudents($conn); ?></p>
         </div>
         <div class="col">
           <h4>Failed Students</h4>
-          <p class="card-text">50</p>
+          <p class="card-text"><?php echo getFailedStudents($conn); ?></p>
         </div>
       </div>
     </div>

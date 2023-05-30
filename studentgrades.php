@@ -2,6 +2,7 @@
 loggedin_only(); ?>
 
 <div class="container mt-5">
+    <h1 align="center" class="mb-5">Choose a grade</h1>
     <div class="row">
         <div class="col-md-3 mb-4">
             <div class="card text-center">

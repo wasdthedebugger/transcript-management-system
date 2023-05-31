@@ -1,8 +1,8 @@
 <?php
 
-$table_name = "eleven_alevels";
+$table_name = "eleven_neb";
 $standard = 1;
-$system = 1;
+$system = 0;
 
 $subjects = array(
     'english' => 3,

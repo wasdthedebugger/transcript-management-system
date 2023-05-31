@@ -125,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="row justify-content-center">
       <div class="col-12 col-md-10 col-lg-12"> <!-- Adjust the column classes to make the form wider -->
         <h1 class="text-center mb-4">Add Students</h1>
+        <p>CSV format: Roll No,First Name,Middle Name,Last Name,DOB,Sex,Municipality,District,Province,Joining Date,School System,High School System</p>
 
         <div class="mb-4"></div> <!-- Add spacing between the CSV file input and the form -->
 
@@ -136,8 +137,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="table-responsive mt-4"> <!-- Add spacing between the CSV file input and the form -->
             <table class="table table-bordered" id="student-table">
-              <table class="table table-bordered" id="student-table">
-                <thead>
+              <table class="table table-bordered table-light" id="student-table">
+                <thead class="thead-light">
                   <tr>
                     <th>Roll No</th>
                     <th>First Name</th>

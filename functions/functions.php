@@ -87,7 +87,39 @@ function isValidRollNumber($rollNumber)
     return preg_match('/^\d{4}[A-Z]$/', $rollNumber);
 }
 
-function entryFieldsGrade($standard, $system, $tableName, $conn) {
+function deleteStudent($rollNumber, $conn)
+{
+    $sql = "SELECT school_system, high_school_system FROM students WHERE roll_no = '$rollNumber'";
+    $result = mysqli_query($conn, $sql);
+    // delete the students grade data
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $school_system = $row['school_system'];
+        $high_school_system = $row['high_school_system'];
+        $sql = "DELETE FROM nine_" . $school_system . " WHERE roll_no = '$rollNumber'";
+        $sql2 = "DELETE FROM ten_" . $school_system . " WHERE roll_no = '$rollNumber'";
+        $sql3 = "DELETE FROM eleven_" . $high_school_system . " WHERE roll_no = '$rollNumber'";
+        $sql4 = "DELETE FROM twelve_" . $high_school_system . " WHERE roll_no = '$rollNumber'";
+        $sql5 = "DELETE FROM students WHERE roll_no = '$rollNumber'";
+
+        $result = mysqli_query($conn, $sql);
+        $result2 = mysqli_query($conn, $sql2);
+        $result3 = mysqli_query($conn, $sql3);
+        $result4 = mysqli_query($conn, $sql4);
+        $result5 = mysqli_query($conn, $sql5);
+
+        if (!$result || !$result2 || !$result3 || !$result4 || !$result5) {
+            fail("Failed to delete student!");
+            return;
+        }
+    } else {
+        fail("Student not found");
+        return;
+    }
+}
+
+function entryFieldsGrade($standard, $system, $tableName, $conn)
+{
 
     // 0 is school 1 is highschool
 
@@ -117,19 +149,19 @@ function entryFieldsGrade($standard, $system, $tableName, $conn) {
 
     // Fetch student roll numbers from the "students" table
     $sql = "SELECT roll_no FROM students";
-    if($standard == 0) {
-        if($system == 0){
-        $sql = "SELECT roll_no FROM students WHERE school_system = 'neb'";
+    if ($standard == 0) {
+        if ($system == 0) {
+            $sql = "SELECT roll_no FROM students WHERE school_system = 'neb'";
         }
-    } else if($standard == 1) {
-        if($system == 0){
-        $sql = "SELECT roll_no FROM students WHERE high_school_system = 'neb'";
-        }else if($system == 1){
-        $sql = "SELECT roll_no FROM students WHERE high_school_system = 'alevels'";
-        }else{
+    } else if ($standard == 1) {
+        if ($system == 0) {
+            $sql = "SELECT roll_no FROM students WHERE high_school_system = 'neb'";
+        } else if ($system == 1) {
+            $sql = "SELECT roll_no FROM students WHERE high_school_system = 'alevels'";
+        } else {
             fail("No system selected");
         }
-    }else{
+    } else {
         fail("No standard selected");
     }
 
@@ -195,70 +227,68 @@ function entryFieldsGrade($standard, $system, $tableName, $conn) {
                 }
                 // Update the database with the new value
                 $sql = "UPDATE $tableName SET $column = $value WHERE roll_no = '$rollNumber'";
-                if(mysqli_query($conn, $sql)){
-                    $success_count +=1;
-                } else{
-                    $fail_count +=1;
+                if (mysqli_query($conn, $sql)) {
+                    $success_count += 1;
+                } else {
+                    $fail_count += 1;
                 }
-                
             }
-            
         }
         // Redirect to the same page to display updated data
         header("Location: {$_SERVER['REQUEST_URI']}");
         exit();
-        
     }
 
     // Generate the form table
-    ?>
+?>
     <div class="container mt-5">
         <div>
             <h1 align="center" class="mb-5"><?php echo $tableName; ?></h1>
             <form action="#" method="POST">
-            <div class="table-responsive mb-4"> 
-            <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Roll Number</th>
-                            <?php foreach ($columns as $column => $dataType) { ?>
-                                <th><?php echo ucfirst($column); ?></th>
-                            <?php } ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($rollNumbers as $rollNumber) { ?>
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered table-light">
+                        <thead class="thead-light">
                             <tr>
-                                <td>
-                                    <input type="hidden" name="rollNumber[]" value="<?php echo $rollNumber; ?>">
-                                    <?php echo $rollNumber; ?>
-                                </td>
+                                <th>Roll Number</th>
                                 <?php foreach ($columns as $column => $dataType) { ?>
-                                    <td>
-                                        <?php
-                                        $inputType = ($dataType == 'float') ? 'number' : 'text';
-                                        $value = isset($marksData[$rollNumber][$column]) ? $marksData[$rollNumber][$column] : '';
-                                        ?>
-                                        <input type="<?php echo $inputType; ?>" step="0.01" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>" value="<?php echo $value; ?>">
-                                    </td>
+                                    <th><?php echo ucfirst($column); ?></th>
                                 <?php } ?>
                             </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($rollNumbers as $rollNumber) { ?>
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="rollNumber[]" value="<?php echo $rollNumber; ?>">
+                                        <?php echo $rollNumber; ?>
+                                    </td>
+                                    <?php foreach ($columns as $column => $dataType) { ?>
+                                        <td>
+                                            <?php
+                                            $inputType = ($dataType == 'float') ? 'number' : 'text';
+                                            $value = isset($marksData[$rollNumber][$column]) ? $marksData[$rollNumber][$column] : '';
+                                            ?>
+                                            <input type="<?php echo $inputType; ?>" step="0.01" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>" value="<?php echo $value; ?>">
+                                        </td>
+                                    <?php } ?>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
-    <?php
+<?php
 
     // Close the database connection
     mysqli_close($conn);
 }
 
 
-function getTotalStudents($conn) {
+function getTotalStudents($conn)
+{
     // Perform the database query to count the total number of students
     // and return the result
     $query = "SELECT COUNT(*) AS total_students FROM students";
@@ -268,7 +298,8 @@ function getTotalStudents($conn) {
 }
 
 // Function to get the number of passed students
-function getPassedStudents($conn) {
+function getPassedStudents($conn)
+{
     // Perform the database query to count the number of students with GPA higher than 0
     // and return the result
     $query = "SELECT COUNT(*) AS passed_students FROM twelve_neb WHERE gpa > 0";
@@ -278,7 +309,8 @@ function getPassedStudents($conn) {
 }
 
 // Function to get the number of failed students
-function getFailedStudents($conn) {
+function getFailedStudents($conn)
+{
     // Perform the database query to count the number of students with GPA equal to 0
     // and return the result
     $query = "SELECT COUNT(*) AS failed_students FROM twelve_neb WHERE gpa = 0";
@@ -287,7 +319,8 @@ function getFailedStudents($conn) {
     return $row['failed_students'];
 }
 
-function generateStudentPDF($directory, $rollNo, $conn, $generateMode) {
+function generateStudentPDF($directory, $rollNo, $conn, $generateMode)
+{
     // Create a new PDF object
     $pdf = new FPDF('P', 'mm', 'A4');
     $pdf->AddPage();
@@ -372,8 +405,43 @@ function generateStudentPDF($directory, $rollNo, $conn, $generateMode) {
         }
 
         // Output the PDF with the roll number and "_studentprofile" suffix
-        $pdf->Output($directory.$rollNo ."_". $firstName . '_studentprofile.pdf', $generateMode);
-    } 
-    
+        $pdf->Output($directory . $rollNo . "_" . $firstName . '_studentprofile.pdf', $generateMode);
+    }
 }
 
+function getRank($roll, $conn)
+{
+    $rank = 0;
+
+    // Check the system of high school
+    $query = "SELECT high_school_system FROM students WHERE roll_no = '$roll'";
+    $result = mysqli_query($conn, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $high_school_system = $row['high_school_system'];
+    }
+
+    // Check if the student is from NEB or A Level (assuming 'neb' is the correct value for NEB)
+
+    if ($high_school_system == "neb") {
+        // Get the student's GPA
+        $query = "SELECT gpa FROM twelve_neb WHERE roll_no = '$roll'";
+        $result = mysqli_query($conn, $query);
+        $row = mysqli_fetch_assoc($result);
+        $gpa = $row['gpa'];
+
+        // Calculate the rank
+        $query = "SELECT DISTINCT gpa FROM twelve_neb ORDER BY gpa DESC";
+        $result = mysqli_query($conn, $query);
+        $rank = 1;
+        while ($row = mysqli_fetch_assoc($result)) {
+            if ($row['gpa'] > $gpa) {
+                $rank++;
+            }
+        }
+    }
+
+    // Return the rank
+    return $rank;
+}

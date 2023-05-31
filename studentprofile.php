@@ -1,10 +1,10 @@
 <?php require('includes/header.php');
-loggedin_only(); 
+loggedin_only();
 
-if(isset($_GET['bulk'])) {
-    if($_GET['bulk'] == 'success') {
+if (isset($_GET['bulk'])) {
+    if ($_GET['bulk'] == 'success') {
         success('Bulk profiles generated successfully!');
-    } else if($_GET['bulk'] == 'error') {
+    } else if ($_GET['bulk'] == 'error') {
         fail('Error generating student profiles!');
     }
 }
@@ -36,7 +36,7 @@ if(isset($_GET['bulk'])) {
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
         <!-- for bulk generation -->
-        <a href="test.php" class="btn btn-primary">Generate All</a>
+        <a href="bulk.php" class="btn btn-primary">Generate All</a>
         <!-- a little info about the buttons -->
         <p class="mt-3">Enter a Roll Number and press <strong>Search</strong> to get individual profile. Click <strong>Generate All</strong> to download all student profiles at once</p>
     </form>

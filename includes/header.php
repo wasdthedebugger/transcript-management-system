@@ -41,10 +41,13 @@ include("functions/functions.php");
             <a class="nav-link" href="addstudents.php">Add Students</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="studentgrades.php">Student Grades</a>
+            <a class="nav-link" href="studentgrades.php">Grades</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="studentprofile.php">Student Profile</a>
+            <a class="nav-link" href="studentprofile.php">Profiles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="students.php">Manage Students</a>
           </li>
           <?php if (is_super_admin()) { ?>
             <li class="nav-item">

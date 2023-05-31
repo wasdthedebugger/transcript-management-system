@@ -10,13 +10,11 @@ include("functions/functions.php");
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/css/style.css">
+
   <!-- jquery cdn -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- bootstrap cdn -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <!-- refresh on form submit and such -->
-  
 
   <title>TMS</title>
 </head>
@@ -49,11 +47,11 @@ include("functions/functions.php");
           <li class="nav-item">
             <a class="nav-link" href="studentprofile.php">Student Profile</a>
           </li>
-        <?php }else{ ?>
+        <?php } else { ?>
           <li class="nav-item">
             Login to view more
           </li>
-          <?php } ?>
+        <?php } ?>
       </ul>
     </div>
   </div>
@@ -71,4 +69,3 @@ include("functions/functions.php");
 
 
 <body>
-  

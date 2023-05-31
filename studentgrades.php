@@ -83,7 +83,7 @@ loggedin_only(); ?>
             <div class="modal-body">
                 <p>Please select an option for Grade 12:</p>
                 <a href="studentgradesadd.php?grade=12&option=neb" class="btn btn-primary">NEB</a>
-                <a href="studentgradesadd.php?grade=12&option=aslevels" class="btn btn-primary">A Levels</a>
+                <a href="studentgradesadd.php?grade=12&option=alevels" class="btn btn-primary">A Levels</a>
             </div>
         </div>
     </div>

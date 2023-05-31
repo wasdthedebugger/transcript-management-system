@@ -1,6 +1,8 @@
 <?php
 
 $table_name = "twelve_neb";
+$standard = 1;
+$system = 0;
 
 $subjects = array(
     'english' => 3,
@@ -97,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_stmt_close($stmt);
 
     // Redirect to a success page or display a success message
-    success('Marks inserted successfully!');
+    echo('Marks inserted successfully!');
 }
 
-entryFieldsGrade($table_name, $conn);
+entryFieldsGrade($standard, $system, $table_name, $conn);

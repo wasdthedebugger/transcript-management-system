@@ -1,6 +1,8 @@
 <?php
 
-$table_name = "eleven_neb";
+$table_name = "eleven_alevels";
+$standard = 1;
+$system = 1;
 
 $subjects = array(
     'english' => 3,
@@ -100,4 +102,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo('Marks inserted successfully!');
 }
 
-entryFieldsGrade($table_name, $conn);
+entryFieldsGrade($standard, $system, $table_name, $conn);

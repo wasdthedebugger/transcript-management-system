@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
+body{
+    overflow-y: scroll;
+    /* pro cool font */
+    font-family: 'Lora', serif;
+}

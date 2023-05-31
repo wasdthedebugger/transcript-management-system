@@ -87,7 +87,9 @@ function isValidRollNumber($rollNumber)
     return preg_match('/^\d{4}[A-Z]$/', $rollNumber);
 }
 
-function entryFieldsGrade($tableName, $conn) {
+function entryFieldsGrade($standard, $system, $tableName, $conn) {
+
+    // 0 is school 1 is highschool
 
     $success_count = 0;
     $fail_count = 0;
@@ -115,6 +117,22 @@ function entryFieldsGrade($tableName, $conn) {
 
     // Fetch student roll numbers from the "students" table
     $sql = "SELECT roll_no FROM students";
+    if($standard == 0) {
+        if($system == 0){
+        $sql = "SELECT roll_no FROM students WHERE school_system = 'neb'";
+        }
+    } else if($standard == 1) {
+        if($system == 0){
+        $sql = "SELECT roll_no FROM students WHERE high_school_system = 'neb'";
+        }else if($system == 1){
+        $sql = "SELECT roll_no FROM students WHERE high_school_system = 'alevels'";
+        }else{
+            fail("No system selected");
+        }
+    }else{
+        fail("No standard selected");
+    }
+
     $result = mysqli_query($conn, $sql);
 
     if (!$result) {

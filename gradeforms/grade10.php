@@ -1,6 +1,11 @@
 <?php
 
+// 0 standard 9 and 10, 1 standard 11 and 12
+// 0 system NEB, 1 system A Levels
+
 $table_name = "ten_neb";
+$standard = 0;
+$system = 0;
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -73,4 +78,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     success('Marks inserted successfully!');
 }
 
-entryFieldsGrade($table_name, $conn);
+entryFieldsGrade($standard, $system, $table_name, $conn);

@@ -1,6 +1,6 @@
 <?php
 
-$table_name = "eleven_alevels";
+$table_name = "twelve_alevels";
 $standard = 1;
 $system = 1;
 

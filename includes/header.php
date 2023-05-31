@@ -15,6 +15,8 @@ include("functions/functions.php");
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- bootstrap cdn -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  
+  <link rel="stylesheet" href="styles/style.css">
 
   <title>TMS</title>
 </head>
@@ -36,18 +38,19 @@ include("functions/functions.php");
       <ul class="navbar-nav">
         <?php if (loggedin()) { ?>
           <li class="nav-item">
-            <a class="nav-link" href="studentgrades.php">Student Grades</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="createuser.php">Create User</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="addstudents.php">Add Students</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="studentgrades.php">Student Grades</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="studentprofile.php">Student Profile</a>
           </li>
-        <?php } else { ?>
+          <?php if (is_super_admin()) { ?>
+            <li class="nav-item">
+            <a class="nav-link" href="createuser.php">Create User</a>
+          </li>
+        <?php }} else { ?>
           <li class="nav-item">
             Login to view more
           </li>

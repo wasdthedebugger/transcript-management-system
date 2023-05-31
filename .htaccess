@@ -3,4 +3,4 @@ Options -Indexes
 
 # Deny access to specific directories
 RewriteEngine On
-RewriteRule ^(actions|assets|functions|gradeforms|includes|tests)/ - [F]
+RewriteRule ^(actions|assets|functions|gradeforms|includes)/ - [F]

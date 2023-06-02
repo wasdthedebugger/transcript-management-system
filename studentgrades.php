@@ -7,6 +7,17 @@ loggedin_only(); ?>
         <div class="col-md-3 mb-4">
             <div class="card text-center">
                 <div class="card-header">
+                    <h3>SAT</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Add SAT scores</p>
+                    <a href="studentgradesadd.php?grade=sat" class="btn btn-primary">Add</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card text-center">
+                <div class="card-header">
                     <h3>Grade 9</h3>
                 </div>
                 <div class="card-body">
@@ -26,6 +37,7 @@ loggedin_only(); ?>
                 </div>
             </div>
         </div>
+
         <div class="col-md-3 mb-4">
             <div class="card text-center">
                 <div class="card-header">

@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $joiningDate = $data[9];
         $schoolSystem = $data[10];
         $highSchoolSystem = $data[11];
+        $standardTest = $data[12];
 
         if (!isValidRollNumber($rollNo)) {
           fail('Invalid roll number format: ' . $rollNo);
@@ -38,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Perform the database insert query
 
-        $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date, school_system, high_school_system) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate', '$schoolSystem', '$highSchoolSystem')";
+        $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date, school_system, high_school_system, standard_test) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate', '$schoolSystem', '$highSchoolSystem', '$standardTest')";
         // Execute the query
         try {
           mysqli_query($conn, $sql);
@@ -71,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $joiningDates = $_POST['joiningDate'];
     $schoolSystems = $_POST['schoolSystem'];
     $highSchoolSystems = $_POST['highSchoolSystem'];
+    $standardTests = $_POST['standardTest'];
 
     // Loop through the submitted form data
     for ($i = 0; $i < count($rollNos); $i++) {
@@ -86,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $joiningDate = $joiningDates[$i];
       $schoolSystem = $schoolSystems[$i];
       $highSchoolSystem = $highSchoolSystems[$i];
+      $standardTest = $standardTests[$i];
 
       if (!isValidRollNumber($rollNo)) {
         fail('Invalid roll number format: ' . $rollNo);
@@ -93,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
 
       // Perform the database insert query
-      $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date, school_system, high_school_system) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate', '$schoolSystem', '$highSchoolSystem')";
+      $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date, school_system, high_school_system, standard_test) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate', '$schoolSystem', '$highSchoolSystem', '$standardTest')";
 
       // Execute the query
       try {
@@ -125,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="row justify-content-center">
       <div class="col-12 col-md-10 col-lg-12"> <!-- Adjust the column classes to make the form wider -->
         <h1 class="text-center mb-4">Add Students</h1>
-        <p>CSV format: Roll No,First Name,Middle Name,Last Name,DOB,Sex,Municipality,District,Province,Joining Date,School System,High School System</p>
+        <p>CSV format: Roll No,First Name,Middle Name,Last Name,DOB,Sex,Municipality,District,Province,Joining Date,School System,High School System,Standard Test</p>
 
         <div class="mb-4"></div> <!-- Add spacing between the CSV file input and the form -->
 
@@ -152,6 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <th>Joining Date</th>
                     <th>School System</th>
                     <th>High School System</th>
+                    <th>Standard Test</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -273,6 +277,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="alevels">A Levels</option>
                       </select>
                     </td>
+                    <td>
+                      <select class="form-select" name="standardTest[]">
+                        <option value="none">None</option>
+                        <option value="sat">SAT</option>
+                      </select>
                     <td><button type="button" class="btn btn-danger btn-sm delete-row">Delete</button></td>
                   </tr>
                 </tbody>
@@ -416,6 +425,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         '<td><select class="form-select" name="highSchoolSystem[]">' +
         '<option value="neb">NEB</option>' +
         '<option value="alevels">A Levels</option>' +
+        '</select></td>' +
+        '<td><select class="form-select" name="standardTest[]">' +
+        '<option value="none">None</option>' +
+        '<option value="sat">SAT</option>' +
         '</select></td>' +
         '<td><button type="button" class="btn btn-danger btn-sm delete-row">Delete</button></td>';
       '</tr>';

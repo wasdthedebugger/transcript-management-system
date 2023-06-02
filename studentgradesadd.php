@@ -11,9 +11,13 @@ if (isset($_GET['grade']) && isset($_GET['option'])) {
     $grade = $_GET['grade'];
     $option = $_GET['option'];
     include("gradeforms/grade" . $grade . $option . ".php");
-} else if (isset($_GET['grade'])) {
+} else if (isset($_GET['grade']) && !isset($_GET['option'])) {
     $grade = $_GET['grade'];
-    include("gradeforms/grade" . $grade . ".php");
+    if ($grade == "sat") {
+        include('gradeforms/sat.php');
+    } else {
+        include("gradeforms/grade" . $grade . ".php");
+    }
 } else {
     header("Location: studentgrades.php");
 }

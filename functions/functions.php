@@ -138,7 +138,7 @@ function entryFieldsGrade($standard, $system, $tableName, $conn)
         $columns = array();
         while ($row = mysqli_fetch_assoc($result)) {
             // Exclude non-subject columns like primary key, etc.
-            if ($row['COLUMN_NAME'] != 'id' && $row['COLUMN_NAME'] != 'roll_no' && $row['COLUMN_NAME'] != 'gpa') {
+            if ($row['COLUMN_NAME'] != 'id' && $row['COLUMN_NAME'] != 'roll_no' && $row['COLUMN_NAME'] != 'gpa' && $row['COLUMN_NAME'] != 'weight') {
                 $columns[$row['COLUMN_NAME']] = $row['DATA_TYPE'];
             }
         }
@@ -161,8 +161,8 @@ function entryFieldsGrade($standard, $system, $tableName, $conn)
         } else {
             fail("No system selected");
         }
-    } else if($standard == 2){
-        if($system == 0){
+    } else if ($standard == 2) {
+        if ($system == 0) {
             $sql = "SELECT roll_no FROM students WHERE standard_test = 'sat'";
         }
     }
@@ -267,12 +267,45 @@ function entryFieldsGrade($standard, $system, $tableName, $conn)
                                     <?php foreach ($columns as $column => $dataType) { ?>
                                         <td>
                                             <?php
-                                            $inputType = ($dataType == 'float') ? 'number' : 'text';
                                             $value = isset($marksData[$rollNumber][$column]) ? $marksData[$rollNumber][$column] : '';
+                                            if ($standard == 2 && $system == 0) {
                                             ?>
-                                            <input type="<?php echo $inputType; ?>" step="0.01" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>" value="<?php echo $value; ?>">
+                                                <input style="width: 100%;" type="number" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?> " value="<?php echo $value; ?>">
+                                            <?php
+                                            } else if (($standard == 0 && $system == 0) || ($standard == 1 && $system == 0)) {
+                                            ?>
+                                                <select style="width:70px;" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>">
+                                                    <option value="4.0" <?php if ($value === '4.0') echo 'selected'; ?>>A+</option>
+                                                    <option value="3.6" <?php if ($value === '3.6') echo 'selected'; ?>>A</option>
+                                                    <option value="3.2" <?php if ($value === '3.2') echo 'selected'; ?>>B+</option>
+                                                    <option value="2.8" <?php if ($value === '2.8') echo 'selected'; ?>>B</option>
+                                                    <option value="2.4" <?php if ($value === '2.4') echo 'selected'; ?>>C+</option>
+                                                    <option value="2.0" <?php if ($value === '2.0') echo 'selected'; ?>>C</option>
+                                                    <option value="1.6" <?php if ($value === '1.6') echo 'selected'; ?>>D</option>
+                                                    <option value="0" <?php if ($value === '0') echo 'selected'; ?>>NG</option>
+                                                    <option value="" <?php if ($value === '') echo 'selected'; ?>>No</option>
+                                                </select>
                                         </td>
-                                    <?php } ?>
+                                    <?php } else { ?>
+                                        <select style="width:70px;" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>">
+                                            <option value="12" <?php if ($value === '12') echo 'selected'; ?>>A*</option>
+                                            <option value="10" <?php if ($value === '10') echo 'selected'; ?>>A</option>
+                                            <option value="8" <?php if ($value === '8') echo 'selected'; ?>>B</option>
+                                            <option value="6" <?php if ($value === '6') echo 'selected'; ?>>C</option>
+                                            <option value="4" <?php if ($value === '4') echo 'selected'; ?>>D</option>
+                                            <option value="2" <?php if ($value === '2') echo 'selected'; ?>>E</option>
+                                            <option value="0" <?php if ($value === '0') echo 'selected'; ?>>U</option>
+                                            <option value="6" <?php if ($value === '6') echo 'selected'; ?>>a</option>
+                                            <option value="5" <?php if ($value === '5') echo 'selected'; ?>>b</option>
+                                            <option value="4" <?php if ($value === '4') echo 'selected'; ?>>c</option>
+                                            <option value="3" <?php if ($value === '3') echo 'selected'; ?>>d</option>
+                                            <option value="2" <?php if ($value === '2') echo 'selected'; ?>>e</option>
+                                            <option value="1" <?php if ($value === '1') echo 'selected'; ?>>u</option>
+                                            <option value="" <?php if ($value === '') echo 'selected'; ?>>No</option>
+                                        </select>
+                                <?php
+                                            }
+                                        } ?>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -287,6 +320,7 @@ function entryFieldsGrade($standard, $system, $tableName, $conn)
     // Close the database connection
     mysqli_close($conn);
 }
+
 
 
 function getTotalStudents($conn)
@@ -334,23 +368,26 @@ function getRank($roll, $conn)
         $high_school_system = $row['high_school_system'];
     }
 
-    // Check if the student is from NEB or A Level (assuming 'neb' is the correct value for NEB)
+    // Check if the student is from NEB or A Level
 
     if ($high_school_system == "neb") {
-        // Get the student's GPA
-        $query = "SELECT gpa FROM twelve_neb WHERE roll_no = '$roll'";
-        $result = mysqli_query($conn, $query);
-        $row = mysqli_fetch_assoc($result);
-        $gpa = $row['gpa'];
+        $table = "twelve_neb";
+    } else {
+        $table = "aggregate_alevels";
+    }
+    // Get the student's GPA
+    $query = "SELECT gpa FROM $table WHERE roll_no = '$roll'";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    $gpa = $row['gpa'];
 
-        // Calculate the rank
-        $query = "SELECT DISTINCT gpa FROM twelve_neb ORDER BY gpa DESC";
-        $result = mysqli_query($conn, $query);
-        $rank = 1;
-        while ($row = mysqli_fetch_assoc($result)) {
-            if ($row['gpa'] > $gpa) {
-                $rank++;
-            }
+    // Calculate the rank
+    $query = "SELECT DISTINCT gpa FROM $table ORDER BY gpa DESC";
+    $result = mysqli_query($conn, $query);
+    $rank = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        if ($row['gpa'] > $gpa) {
+            $rank++;
         }
     }
 
@@ -375,6 +412,7 @@ function getGraduationDate($rollNo, $conn)
 
     return null; // Return null if the joining date is not found
 }
+
 function generateStudentPDF($directory, $rollNo, $conn, $generateMode)
 {
     // Create a new PDF object
@@ -424,7 +462,6 @@ function generateStudentPDF($directory, $rollNo, $conn, $generateMode)
         $pdf->Cell(0, $cellHeight, 'Class Rank: ' . $rank, 0, 1, 'C');
         $pdf->Ln();
 
-        // Loop through each grade level
         // Loop through each grade level
         $gradeLevels = ['nine_neb', 'ten_neb', 'eleven_neb', 'twelve_neb'];
         foreach ($gradeLevels as $index => $gradeLevel) {
@@ -483,10 +520,16 @@ function generateStudentPDF($directory, $rollNo, $conn, $generateMode)
                         $pdf->SetFont('Arial', '', 10);
                         $pdf->SetX($pdf->GetX());
                         $pdf->SetFillColor($rowColors[$rowColorIndex % 2][0], $rowColors[$rowColorIndex % 2][1], $rowColors[$rowColorIndex % 2][2]);
-                        $pdf->Cell($cellWidth, $cellHeight, $column, 1, 0, 'C', true);
-                        $pdf->Cell($cellWidth, $cellHeight, $value, 1, 1, 'C', true);
 
-                        $hasNonNullGrade = true; // Set the flag to true if a non-null grade exists
+                        // Convert numerical grade to letter grade
+                        $letterGrade = getLetterGradeNEB($value);
+
+                        if ($letterGrade !== '*') { // Exclude subjects with "*" grade
+                            $pdf->Cell($cellWidth, $cellHeight, $column, 1, 0, 'C', true);
+                            $pdf->Cell($cellWidth, $cellHeight, $letterGrade, 1, 1, 'C', true);
+
+                            $hasNonNullGrade = true; // Set the flag to true if a non-null grade exists
+                        }
                     }
 
                     if ($hasNonNullGrade) {
@@ -503,8 +546,51 @@ function generateStudentPDF($directory, $rollNo, $conn, $generateMode)
         $pdf->Cell(0, $cellHeight, 'Due to lack of standardization of grade 9, the 9-10th grade GPA is Grade 10\'s GPA.', 0, 1, 'L');
         $pdf->Cell(0, $cellHeight, 'Due to lack of standardization of grade 11, the 11-12th grade GPA is Grade 12\'s GPA.', 0, 1, 'L');
 
-
         // Output the PDF with the roll number and "_studentprofile" suffix
-        $pdf->Output($directory . $rollNo . "_" . $firstName . '_studentprofile.pdf', $generateMode);
+        $pdf->Output($directory . $rollNo . '_studentprofile.pdf', $generateMode);
+    }
+}
+
+function getLetterGradeNEB($numericalGrade)
+{
+    if ($numericalGrade >= 4.0) {
+        return 'A+';
+    } elseif ($numericalGrade >= 3.6) {
+        return 'A';
+    } elseif ($numericalGrade >= 3.2) {
+        return 'B+';
+    } elseif ($numericalGrade >= 2.8) {
+        return 'B';
+    } elseif ($numericalGrade >= 2.4) {
+        return 'C+';
+    } elseif ($numericalGrade >= 2.0) {
+        return 'C';
+    } elseif ($numericalGrade >= 1.6) {
+        return 'D';
+    } elseif ($numericalGrade > 0) {
+        return 'NG';
+    } else {
+        return '*';
+    }
+}
+
+function getLetterGradeAlevels($numericalGrade)
+{
+    if ($numericalGrade >= 90) {
+        return 'A*';
+    } elseif ($numericalGrade >= 80) {
+        return 'A';
+    } elseif ($numericalGrade >= 70) {
+        return 'B';
+    } elseif ($numericalGrade >= 60) {
+        return 'C';
+    } elseif ($numericalGrade >= 50) {
+        return 'D';
+    } elseif ($numericalGrade >= 40) {
+        return 'E';
+    } elseif ($numericalGrade > 0) {
+        return 'NG';
+    } else {
+        return '*';
     }
 }

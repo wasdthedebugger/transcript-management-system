@@ -10,8 +10,7 @@ $tables = [
     "twelve_neb",
     "students",
     "sat",
-    "eleven_alevels",
-    "twelve_alevels",
+    "aggregate_alevels",
     "users"
 ];
 

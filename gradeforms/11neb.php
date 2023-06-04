@@ -43,23 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Loop through the submitted form data
     foreach ($_POST['rollNumber'] as $rollNumber) {
-        // Initialize the variables
-        $english = null;
-        $english_pr = null;
-        $nepali = null;
-        $nepali_pr = null;
-        $maths = null;
-        $maths_pr = null;
-        $physics = null;
-        $physics_pr = null;
-        $chemistry = null;
-        $chemistry_pr = null;
-        $computer = null;
-        $computer_pr = null;
-        $biology = null;
-        $biology_pr = null;
-        $gpa = null;
-
         $grades = array();
         $validGrades = array();
         $creditHours = array();
@@ -97,9 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Close the statement
     mysqli_stmt_close($stmt);
-
-    // Redirect to a success page or display a success message
-    echo('Marks inserted successfully!');
 }
 
 entryFieldsGrade($standard, $system, $table_name, $conn);

@@ -6,17 +6,17 @@ loggedin_only();
 <!-- grade specific forms and SQL -->
 <?php
 
-// if grade is selected and option is selected include the grade form
-if (isset($_GET['grade']) && isset($_GET['option'])) {
+// if grade is selected and system is selected include the grade form
+if (isset($_GET['grade']) && isset($_GET['system'])) {
     $grade = $_GET['grade'];
-    $option = $_GET['option'];
-    include("gradeforms/grade" . $grade . $option . ".php");
-} else if (isset($_GET['grade']) && !isset($_GET['option'])) {
+    $system = $_GET['system'];
+    include("gradeforms/" . $grade . $system . ".php");
+} else if (isset($_GET['grade']) && !isset($_GET['system'])) {
     $grade = $_GET['grade'];
     if ($grade == "sat") {
         include('gradeforms/sat.php');
     } else {
-        include("gradeforms/grade" . $grade . ".php");
+        include("gradeforms/" . $grade . ".php");
     }
 } else {
     header("Location: studentgrades.php");

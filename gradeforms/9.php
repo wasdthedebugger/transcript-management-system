@@ -1,9 +1,6 @@
 <?php
 
-// 0 standard 9 and 10, 1 standard 11 and 12
-// 0 system NEB, 1 system A Levels
-
-$table_name = "ten_neb";
+$table_name = "nine_neb";
 $standard = 0;
 $system = 0;
 
@@ -73,9 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Close the statement
     mysqli_stmt_close($stmt);
-
-    // Redirect to a success page or display a success message
-    success('Marks inserted successfully!');
 }
 
 entryFieldsGrade($standard, $system, $table_name, $conn);

@@ -1,6 +1,5 @@
-Roll No,First Name,Middle Name,Last Name,DOB,Sex,Municipality,District,Province,Joining Date,School System,High School System,Standard Test
-1001A,John,,,1999-05-10,M,Kathmandu,Kathmandu,Bagmati,2021-01-15,NEB,NEB,SAT
-1002B,Jane,,,2000-02-18,F,Pokhara,Kaski,Gandaki,2020-07-03,NEB,NEB,SAT
-1003C,David,,,1998-11-25,M,Biratnagar,Morang,Koshi,2022-03-20,NEB,NEB,SAT
-1004D,Sarah,,,2001-08-05,F,Dharan,Sunsari,Koshi,2021-11-08,NEB,NEB,SAT
-1005E,Michael,,,1997-09-15,M,Lalitpur,Lalitpur,Bagmati,2022-09-05,NEB,NEB,SAT
+roll_no,first_name,middle_name,last_name,dob,sex,municipality,district,province,joining_date,school_system,high_school_system,standard_test
+0001A,John,,Doe,2003-01-01,Male,Kathmandu,Kathmandu,Bagmati,2021-01-15,neb,alevels,sat
+0002A,Jane,,Smith,2002-03-15,Female,Pokhara,Kaski,Gandaki,2021-02-10,neb,neb,sat
+0003A,David,,Johnson,2003-06-20,Male,Biratnagar,Morang,Koshi,2021-03-05,neb,neb,sat
+0004A,Emily,,Davis,2002-11-10,Female,Butwal,Rupandehi,Lumbini,2021-01-30,neb,alevels,sat

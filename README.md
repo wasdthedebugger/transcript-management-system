@@ -34,7 +34,7 @@ The project follows the following folder structure:
    - The main entry point of the project. It may serve as the homepage or the starting point of the application.
 
 ## Standards
-0 standard 9 and 10, 1 standard 11 and 12 Standards
+0 standard 9 and 10, 1 standard 11 and 12
 
 ## Systems
-0 standard 9 and 10, 1 standard 11 and 12 Standards
+0 system NEB, 1 system A Levels

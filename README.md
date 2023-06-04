@@ -33,5 +33,8 @@ The project follows the following folder structure:
 6. `index.php`
    - The main entry point of the project. It may serve as the homepage or the starting point of the application.
 
-## 0 standard 9 and 10, 1 standard 11 and 12
-## 0 system NEB, 1 system A Levels in the form generation function
+## Standards
+0 standard 9 and 10, 1 standard 11 and 12 Standards
+
+## Systems
+0 standard 9 and 10, 1 standard 11 and 12 Standards

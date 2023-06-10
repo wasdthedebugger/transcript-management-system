@@ -1,35 +1,4 @@
-<?php
-
-require('vendor/autoload.php');
-// connection file
-require('includes/conn.php');
-$roll_no = $_GET['roll_no'];
-$sql = "SELECT * FROM students WHERE roll_no = '$roll_no'";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($result);
-
-$first_name = $row['first_name'];
-$middle_name = $row['middle_name'];
-$last_name = $row['last_name'];
-$dob = $row['dob'];
-$district = $row['district'];
-$municipality = $row['municipality'];
-$provience = $row['provience'];
-$sex = $row['sex'];
-
-
-use Mpdf\Mpdf;
-
-$pdf = new Mpdf();
-$pdf->SetMargins(0, 0, 7, 0);
-$pdf->WriteHTML(generateHTML($roll_no, $first_name, $middle_name, $last_name, $dob, $sex,  $district, $municipality, $provience));
-
-$pdf->Output();
-
-function generateHTML($roll_no, $first_name, $middle_name, $last_name, $dob, $sex, $municipality, $district, $provience)
-{
-    return <<<EOT
-    <head>
+<head>
     <style>
         /* google fonts */
 
@@ -182,9 +151,9 @@ function generateHTML($roll_no, $first_name, $middle_name, $last_name, $dob, $se
                             <td>SEX</td>
                         </tr>
                         <tr>
-                            <td>$first_name $middle_name $last_name</td>
-                            <td>$dob</td>
-                            <td>$sex</td>
+                            <td>Nikas Ghimire</td>
+                            <td>2063.8.3</td>
+                            <td>M</td>
                         </tr>
                         <tr class="bold-tr">
                             <td>Municipality</td>
@@ -192,12 +161,12 @@ function generateHTML($roll_no, $first_name, $middle_name, $last_name, $dob, $se
                             <td>Province</td>
                         </tr>
                         <tr>
-                            <td>$municipality</td>
-                            <td>$district</td>
-                            <td>$provience</td>
+                            <td>Butwal</td>
+                            <td>Rupandehi</td>
+                            <td>Lumbini</td>
                         </tr>
                         <tr class="bold-tr">
-                            <td>Roll Number: $roll_no</td>
+                            <td>Roll Number: 2344A</td>
                         </tr>
                     </table>
                 </div>
@@ -652,5 +621,3 @@ function generateHTML($roll_no, $first_name, $middle_name, $last_name, $dob, $se
         </tr>
     </table>
 </div>
-EOT;
-}

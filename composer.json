@@ -1,0 +1,17 @@
+{
+    "name": "wasdt/tms",
+    "autoload": {
+        "psr-4": {
+            "Wasdt\\Tms\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nikas Ghimire",
+            "email": "wasdthedebugger@gmail.com"
+        }
+    ],
+    "require": {
+        "mpdf/mpdf": "^8.0"
+    }
+}

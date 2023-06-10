@@ -37,9 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           continue; // Skip this iteration and proceed to the next loop
         }
 
-        // Perform the database insert query
+        // Calculate the batch based on the roll number
+        $batch = substr($rollNo, 0, 1) . '000' . substr($rollNo, -1);
 
-        $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date, school_system, high_school_system, standard_test) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate', '$schoolSystem', '$highSchoolSystem', '$standardTest')";
+        // Perform the database insert query
+        $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date, school_system, high_school_system, standard_test, batch) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate', '$schoolSystem', '$highSchoolSystem', '$standardTest', '$batch')";
+
         // Execute the query
         try {
           mysqli_query($conn, $sql);
@@ -95,8 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         continue; // Skip this iteration and proceed to the next loop
       }
 
+      // Calculate the batch based on the roll number
+      $batch = substr($rollNo, 0, 1) . '000' . substr($rollNo, -1);
+
       // Perform the database insert query
-      $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date, school_system, high_school_system, standard_test) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate', '$schoolSystem', '$highSchoolSystem', '$standardTest')";
+      $sql = "INSERT INTO students (roll_no, first_name, middle_name, last_name, dob, sex, municipality, district, province, joining_date, school_system, high_school_system, standard_test, batch) VALUES ('$rollNo', '$firstName', '$middleName', '$lastName', '$dob', '$sex', '$municipality', '$district', '$province', '$joiningDate', '$schoolSystem', '$highSchoolSystem', '$standardTest', '$batch')";
 
       // Execute the query
       try {
@@ -115,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
+
 
 
 <style>

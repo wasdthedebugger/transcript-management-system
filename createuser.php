@@ -17,7 +17,7 @@ if (isset($_POST['username'])) {
 
     <!-- already exists banner -->
     <div class="alert alert-danger" role="alert">
-      Username already exists!
+      Username already exists !
     </div>
 
   <?php

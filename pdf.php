@@ -1,7 +1,7 @@
 <?php
 
+require('includes/conn.php');
 require('vendor/autoload.php');
-// connection file
 require('includes/conn.php');
 $roll_no = $_GET['roll_no'];
 $sql = "SELECT * FROM students WHERE roll_no = '$roll_no'";

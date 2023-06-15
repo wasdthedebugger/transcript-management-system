@@ -89,9 +89,6 @@ function isValidRollNumber($rollNumber)
 
 function entryFieldsGrade($standard, $system, $tableName, $conn)
 {
-    $success_count = 0;
-    $fail_count = 0;
-
     // Connect to the database
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
@@ -196,11 +193,7 @@ function entryFieldsGrade($standard, $system, $tableName, $conn)
                 }
                 // Update the database with the new value
                 $sql = "UPDATE $tableName SET $column = $value WHERE roll_no = '$rollNumber'";
-                if (mysqli_query($conn, $sql)) {
-                    $success_count += 1;
-                } else {
-                    $fail_count += 1;
-                }
+                mysqli_query($conn, $sql);
             }
         }
         // Redirect to the same page to display updated data
@@ -401,27 +394,120 @@ function getLetterGradeNEB($numericalGrade)
     } elseif ($numericalGrade > 0) {
         return 'NG';
     } else {
-        return '*';
+        return '';
     }
 }
 
-function getLetterGradeAlevels($numericalGrade)
+function getNumericGradeNEB($letterGrade)
 {
-    if ($numericalGrade >= 90) {
-        return 'A*';
-    } elseif ($numericalGrade >= 80) {
-        return 'A';
-    } elseif ($numericalGrade >= 70) {
-        return 'B';
-    } elseif ($numericalGrade >= 60) {
-        return 'C';
-    } elseif ($numericalGrade >= 50) {
-        return 'D';
-    } elseif ($numericalGrade >= 40) {
-        return 'E';
-    } elseif ($numericalGrade > 0) {
-        return 'NG';
-    } else {
-        return '*';
+    switch ($letterGrade) {
+        case 'A+':
+            return 4.0;
+        case 'A':
+            return 3.6;
+        case 'B+':
+            return 3.2;
+        case 'B':
+            return 2.8;
+        case 'C+':
+            return 2.4;
+        case 'C':
+            return 2.0;
+        case 'D':
+            return 1.6;
+        case 'NG':
+            return 0.0;
+        default:
+            return '';
     }
+}
+
+
+function calculateSchoolNebGpa($grades) {
+    $count = count($grades);
+
+    if ($count > 0) {
+        if (in_array(0, $grades)) {
+            return 0; // Set GPA to 0 if any subject grade is 0
+        } else {
+            return array_sum($grades) / $count;
+        }
+    } else {
+        return 0; // Set GPA to 0 if no subjects are passed
+    }
+}
+function getNumericGradeAlevels($letterGrade) {
+  switch ($letterGrade) {
+    case 'A*':
+      return 12;
+    case 'A':
+      return 10;
+    case 'B':
+      return 8;
+    case 'C':
+      return 6;
+    case 'D':
+      return 4;
+    case 'E':
+      return 2;
+    case 'U':
+      return 0;
+    case 'a':
+      return 6;
+    case 'b':
+      return 5;
+    case 'c':
+      return 4;
+    case 'd':
+      return 3;
+    case 'e':
+      return 2;
+    case 'u':
+      return 1;
+    default:
+      return ''; // or any other default value you prefer
+  }
+}
+
+function calculateHighSchoolNebGrades($grades) {
+    $subjects = array(
+        'english' => 3,
+        'english_pr' => 1,
+        'nepali' => 2.25,
+        'nepali_pr' => 0.75,
+        'maths' => 3.75,
+        'maths_pr' => 1.25,
+        'physics' => 3.75,
+        'physics_pr' => 1.25,
+        'chemistry' => 3.75,
+        'chemistry_pr' => 1.25,
+        'computer' => 2.5,
+        'computer_pr' => 2.5,
+        'biology' => 3.25,
+        'biology_pr' => 1.75
+    );
+
+    $validGrades = array();
+    $creditHours = array();
+
+    foreach ($subjects as $subject => $creditHour) {
+        if (isset($grades[$subject])) {
+            $grade = $grades[$subject];
+            if (is_numeric($grade)) {
+                if ($grade == 0) {
+                    return 0; // If any subject has a grade of 0, return GPA as non-grade (0)
+                }
+                $validGrades[] = $grade * $creditHour;
+                $creditHours[] = $creditHour;
+            }
+        }
+    }
+
+    if (!empty($validGrades)) {
+        $totalCreditHours = array_sum($creditHours);
+        $gpa = array_sum($validGrades) / $totalCreditHours;
+        return $gpa;
+    }
+
+    return null; // If no valid grades found, return null or any default value you prefer
 }

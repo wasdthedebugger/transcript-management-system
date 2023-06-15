@@ -53,6 +53,9 @@ include("functions/functions.php");
             <li class="nav-item">
             <a class="nav-link" href="createuser.php">Create User</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="csventry.php">CSV</a>
+          </li>
         <?php }} else { ?>
           <li class="nav-item">
             Login to view more

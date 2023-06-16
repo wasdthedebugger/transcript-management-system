@@ -14,22 +14,38 @@
     $dob = $row['dob'];
     $district = $row['district'];
     $municipality = $row['municipality'];
-    $provience = $row['provience'];
+    $provience = $row['province'];
     $sex = $row['sex'];
+
+    $query = "SELECT * FROM nine_neb WHERE roll_no = '$roll_no'";
+    $result = mysqli_query($conn, $query);
+    $nineNeb = mysqli_fetch_assoc($result);
+
+    // Fetch data from ten_neb table for the specified roll number
+    $query = "SELECT * FROM ten_neb WHERE roll_no = '$roll_no'";
+    $result = mysqli_query($conn, $query);
+    $tenNeb = mysqli_fetch_assoc($result);
+
+    // Testing: Output the arrays
+    print_r($nineNeb);
+    print_r($tenNeb);
+
+    // Close the database connection
 
 
     use Mpdf\Mpdf;
 
     $pdf = new Mpdf();
     $pdf->SetMargins(0, 0, 7, 0);
-    $pdf->WriteHTML(generateHTML($roll_no, $first_name, $middle_name, $last_name, $dob, $sex,  $district, $municipality, $provience));
+    $pdf->WriteHTML(generateHTML($roll_no, $first_name, $middle_name, $last_name, $dob, $sex,  $district, $municipality, $provience, $nineNeb, $tenNeb));
 
     $pdf->Output();
 
-    function generateHTML($roll_no, $first_name, $middle_name, $last_name, $dob, $sex, $municipality, $district, $provience)
+    function generateHTML($roll_no, $first_name, $middle_name, $last_name, $dob, $sex, $municipality, $district, $provience, $nineNeb, $tenNeb)
     {
         return <<<EOT
         <head>
+        
         <style>
             /* google fonts */
 

@@ -302,7 +302,12 @@ function getPassedStudents($conn)
     $query = "SELECT COUNT(*) AS passed_students FROM twelve_neb WHERE gpa > 0";
     $result = mysqli_query($conn, $query);
     $row = mysqli_fetch_assoc($result);
-    return $row['passed_students'];
+    $total = $row['passed_students'];
+    $query = "SELECT COUNT(*) AS passed_students FROM aggregate_alevels WHERE gpa > 0";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    $total += $row['passed_students'];
+    return $total;
 }
 
 // Function to get the number of failed students
@@ -313,7 +318,12 @@ function getFailedStudents($conn)
     $query = "SELECT COUNT(*) AS failed_students FROM twelve_neb WHERE gpa = 0";
     $result = mysqli_query($conn, $query);
     $row = mysqli_fetch_assoc($result);
-    return $row['failed_students'];
+    $total = $row['failed_students'];
+    $query = "SELECT COUNT(*) AS failed_students FROM aggregate_alevels WHERE gpa = 0";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    $total += $row['failed_students'];
+    return $total;
 }
 
 function getRank($roll, $conn)
@@ -436,6 +446,7 @@ function calculateSchoolNebGpa($grades) {
         return 0; // Set GPA to 0 if no subjects are passed
     }
 }
+
 function getNumericGradeAlevels($letterGrade) {
   switch ($letterGrade) {
     case 'A*':
@@ -469,45 +480,3 @@ function getNumericGradeAlevels($letterGrade) {
   }
 }
 
-function calculateHighSchoolNebGrades($grades) {
-    $subjects = array(
-        'english' => 3,
-        'english_pr' => 1,
-        'nepali' => 2.25,
-        'nepali_pr' => 0.75,
-        'maths' => 3.75,
-        'maths_pr' => 1.25,
-        'physics' => 3.75,
-        'physics_pr' => 1.25,
-        'chemistry' => 3.75,
-        'chemistry_pr' => 1.25,
-        'computer' => 2.5,
-        'computer_pr' => 2.5,
-        'biology' => 3.25,
-        'biology_pr' => 1.75
-    );
-
-    $validGrades = array();
-    $creditHours = array();
-
-    foreach ($subjects as $subject => $creditHour) {
-        if (isset($grades[$subject])) {
-            $grade = $grades[$subject];
-            if (is_numeric($grade)) {
-                if ($grade == 0) {
-                    return 0; // If any subject has a grade of 0, return GPA as non-grade (0)
-                }
-                $validGrades[] = $grade * $creditHour;
-                $creditHours[] = $creditHour;
-            }
-        }
-    }
-
-    if (!empty($validGrades)) {
-        $totalCreditHours = array_sum($creditHours);
-        $gpa = array_sum($validGrades) / $totalCreditHours;
-        return $gpa;
-    }
-
-    return null; // If no valid grades found, return null or any default value you prefer
-}

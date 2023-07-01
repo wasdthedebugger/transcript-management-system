@@ -49,7 +49,7 @@ function username()
 function superadmin_only()
 {
     if (!is_super_admin()) {
-        header("Location: index.php");
+        fail("You are not authorized to view this page");
         exit();
     }
 }
@@ -58,7 +58,7 @@ function superadmin_only()
 function loggedin_only()
 {
     if (!loggedin()) {
-        header("Location: index.php");
+        fail("Please login to continue");
         exit();
     }
 }
@@ -197,91 +197,88 @@ function entryFieldsGrade($standard, $system, $tableName, $conn)
             }
         }
         // Redirect to the same page to display updated data
-        header("Location: {$_SERVER['REQUEST_URI']}");
+        header("Location: ?page=curriculum&status=success");
         exit();
     }
 
     // Generate the form table
-    ?>
-    <div class="container mt-5">
-        <div>
-            <h1 align="center" class="mb-5"><?php echo $tableName; ?></h1>
-            <form action="#" method="POST">
-                <div class="table-responsive mb-4">
-                    <table class="table table-bordered table-light">
-                        <thead class="thead-light">
+?>
+    <div style="padding: 20px; overflow-x: auto;">
+        <div style="font-size: 20px; font-weight: bold; margin-bottom: 20px;"><?php echo $tableName; ?></div>
+        <form action="#" method="POST">
+            <div class="grade-container">
+                <table border=1 class="grade-table">
+                    <thead style="background-color: #d6dfe8;">
+                        <tr>
+                            <th style="padding: 10px;">Roll Number</th>
+                            <?php foreach ($columns as $column => $dataType) { ?>
+                                <th style="padding: 10px;"><?php echo ucfirst($column); ?></th>
+                            <?php } ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($rollNumbers as $rollNumber) { ?>
                             <tr>
-                                <th>Roll Number</th>
+                                <td>
+                                    <input type="hidden" name="rollNumber[]" value="<?php echo $rollNumber; ?>">
+                                    <?php echo $rollNumber; ?>
+                                </td>
                                 <?php foreach ($columns as $column => $dataType) { ?>
-                                    <th><?php echo ucfirst($column); ?></th>
+                                    <td style="padding: 10px;">
+                                        <?php
+                                        $value = isset($marksData[$rollNumber][$column]) ? $marksData[$rollNumber][$column] : '';
+                                        if ($standard == 2 && $system == 0) {
+                                        ?>
+                                            <input style="width: 70px;" type="number" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?> " value="<?php echo $value; ?>">
+                                        <?php
+                                        } else if (($standard == 0 && $system == 0) || ($standard == 1 && $system == 0)) {
+                                        ?>
+                                            <select style="width: 70px;" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>">
+                                                <option value="4.0" <?php if ($value === '4.0') echo 'selected'; ?>>A+</option>
+                                                <option value="3.6" <?php if ($value === '3.6') echo 'selected'; ?>>A</option>
+                                                <option value="3.2" <?php if ($value === '3.2') echo 'selected'; ?>>B+</option>
+                                                <option value="2.8" <?php if ($value === '2.8') echo 'selected'; ?>>B</option>
+                                                <option value="2.4" <?php if ($value === '2.4') echo 'selected'; ?>>C+</option>
+                                                <option value="2.0" <?php if ($value === '2.0') echo 'selected'; ?>>C</option>
+                                                <option value="1.6" <?php if ($value === '1.6') echo 'selected'; ?>>D</option>
+                                                <option value="0" <?php if ($value === '0') echo 'selected'; ?>>NG</option>
+                                                <option value="" <?php if ($value === '') echo 'selected'; ?>>No</option>
+                                            </select>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <select style="width: 70px;" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>">
+                                                <option value="12" <?php if ($value === '12') echo 'selected'; ?>>A*</option>
+                                                <option value="10" <?php if ($value === '10') echo 'selected'; ?>>A</option>
+                                                <option value="8" <?php if ($value === '8') echo 'selected'; ?>>B</option>
+                                                <option value="6" <?php if ($value === '6') echo 'selected'; ?>>C</option>
+                                                <option value="4" <?php if ($value === '4') echo 'selected'; ?>>D</option>
+                                                <option value="2" <?php if ($value === '2') echo 'selected'; ?>>E</option>
+                                                <option value="0" <?php if ($value === '0') echo 'selected'; ?>>U</option>
+                                                <option value="6" <?php if ($value === '6') echo 'selected'; ?>>a</option>
+                                                <option value="5" <?php if ($value === '5') echo 'selected'; ?>>b</option>
+                                                <option value="4" <?php if ($value === '4') echo 'selected'; ?>>c</option>
+                                                <option value="3" <?php if ($value === '3') echo 'selected'; ?>>d</option>
+                                                <option value="2" <?php if ($value === '2') echo 'selected'; ?>>e</option>
+                                                <option value="1" <?php if ($value === '1') echo 'selected'; ?>>u</option>
+                                                <option value="" <?php if ($value === '') echo 'selected'; ?>>No</option>
+                                            </select>
+                                        <?php
+                                        }
+                                        ?>
+                                    </td>
                                 <?php } ?>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($rollNumbers as $rollNumber) { ?>
-                                <tr>
-                                    <td>
-                                        <input type="hidden" name="rollNumber[]" value="<?php echo $rollNumber; ?>">
-                                        <?php echo $rollNumber; ?>
-                                    </td>
-                                    <?php foreach ($columns as $column => $dataType) { ?>
-                                        <td>
-                                            <?php
-                                            $value = isset($marksData[$rollNumber][$column]) ? $marksData[$rollNumber][$column] : '';
-                                            if ($standard == 2 && $system == 0) {
-                                            ?>
-                                                <input style="width: 100%;" type="number" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?> " value="<?php echo $value; ?>">
-                                            <?php
-                                            } else if (($standard == 0 && $system == 0) || ($standard == 1 && $system == 0)) {
-                                            ?>
-                                                <select style="width:70px;" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>">
-                                                    <option value="4.0" <?php if ($value === '4.0') echo 'selected'; ?>>A+</option>
-                                                    <option value="3.6" <?php if ($value === '3.6') echo 'selected'; ?>>A</option>
-                                                    <option value="3.2" <?php if ($value === '3.2') echo 'selected'; ?>>B+</option>
-                                                    <option value="2.8" <?php if ($value === '2.8') echo 'selected'; ?>>B</option>
-                                                    <option value="2.4" <?php if ($value === '2.4') echo 'selected'; ?>>C+</option>
-                                                    <option value="2.0" <?php if ($value === '2.0') echo 'selected'; ?>>C</option>
-                                                    <option value="1.6" <?php if ($value === '1.6') echo 'selected'; ?>>D</option>
-                                                    <option value="0" <?php if ($value === '0') echo 'selected'; ?>>NG</option>
-                                                    <option value="" <?php if ($value === '') echo 'selected'; ?>>No</option>
-                                                </select>
-                                            <?php
-                                            } else {
-                                            ?>
-                                                <select style="width:70px;" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>">
-                                                    <option value="12" <?php if ($value === '12') echo 'selected'; ?>>A*</option>
-                                                    <option value="10" <?php if ($value === '10') echo 'selected'; ?>>A</option>
-                                                    <option value="8" <?php if ($value === '8') echo 'selected'; ?>>B</option>
-                                                    <option value="6" <?php if ($value === '6') echo 'selected'; ?>>C</option>
-                                                    <option value="4" <?php if ($value === '4') echo 'selected'; ?>>D</option>
-                                                    <option value="2" <?php if ($value === '2') echo 'selected'; ?>>E</option>
-                                                    <option value="0" <?php if ($value === '0') echo 'selected'; ?>>U</option>
-                                                    <option value="6" <?php if ($value === '6') echo 'selected'; ?>>a</option>
-                                                    <option value="5" <?php if ($value === '5') echo 'selected'; ?>>b</option>
-                                                    <option value="4" <?php if ($value === '4') echo 'selected'; ?>>c</option>
-                                                    <option value="3" <?php if ($value === '3') echo 'selected'; ?>>d</option>
-                                                    <option value="2" <?php if ($value === '2') echo 'selected'; ?>>e</option>
-                                                    <option value="1" <?php if ($value === '1') echo 'selected'; ?>>u</option>
-                                                    <option value="" <?php if ($value === '') echo 'selected'; ?>>No</option>
-                                                </select>
-                                            <?php
-                                            }
-                                            ?>
-                                        </td>
-                                    <?php } ?>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="text-align: left; padding-top: 20px;">
+                <button type="submit" class="custom-button">Update</button>
+            </div>
+        </form>
     </div>
-    <?php
-
-    // Close the database connection
-    mysqli_close($conn);
+<?php
 }
 
 function getTotalStudents($conn)
@@ -326,12 +323,12 @@ function getFailedStudents($conn)
     return $total;
 }
 
-function getRank($roll, $conn)
+function getRank($roll, $batch, $conn)
 {
     $rank = 0;
 
     // Check the system of high school
-    $query = "SELECT high_school_system FROM students WHERE roll_no = '$roll'";
+    $query = "SELECT high_school_system FROM students WHERE roll_no = '$roll' AND batch = '$batch'";
     $result = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($result) > 0) {
@@ -433,7 +430,8 @@ function getNumericGradeNEB($letterGrade)
 }
 
 
-function calculateSchoolNebGpa($grades) {
+function calculateSchoolNebGpa($grades)
+{
     $count = count($grades);
 
     if ($count > 0) {
@@ -447,36 +445,70 @@ function calculateSchoolNebGpa($grades) {
     }
 }
 
-function getNumericGradeAlevels($letterGrade) {
-  switch ($letterGrade) {
-    case 'A*':
-      return 12;
-    case 'A':
-      return 10;
-    case 'B':
-      return 8;
-    case 'C':
-      return 6;
-    case 'D':
-      return 4;
-    case 'E':
-      return 2;
-    case 'U':
-      return 0;
-    case 'a':
-      return 6;
-    case 'b':
-      return 5;
-    case 'c':
-      return 4;
-    case 'd':
-      return 3;
-    case 'e':
-      return 2;
-    case 'u':
-      return 1;
-    default:
-      return ''; // or any other default value you prefer
-  }
+function getNumericGradeAlevels($letterGrade)
+{
+    switch ($letterGrade) {
+        case 'A*':
+            return 12;
+        case 'A':
+            return 10;
+        case 'B':
+            return 8;
+        case 'C':
+            return 6;
+        case 'D':
+            return 4;
+        case 'E':
+            return 2;
+        case 'U':
+            return 0;
+        case 'a':
+            return 6;
+        case 'b':
+            return 5;
+        case 'c':
+            return 4;
+        case 'd':
+            return 3;
+        case 'e':
+            return 2;
+        case 'u':
+            return 1;
+        default:
+            return ''; // or any other default value you prefer
+    }
 }
 
+function getLetterGradeAlevels($numericGrade)
+{
+    switch ($numericGrade) {
+        case 12:
+            return 'A*';
+        case 10:
+            return 'A';
+        case 8:
+            return 'B';
+        case 6:
+            return 'C';
+        case 4:
+            return 'D';
+        case 2:
+            return 'E';
+        case 0:
+            return 'U';
+        case 6:
+            return 'a';
+        case 5:
+            return 'b';
+        case 4:
+            return 'c';
+        case 3:
+            return 'd';
+        case 2:
+            return 'e';
+        case 1:
+            return 'u';
+        default:
+            return ''; // or any other default value you prefer
+    }
+}

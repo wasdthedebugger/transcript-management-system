@@ -12,19 +12,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Prepare the SQL statement to insert or update marks in the nine_neb table
-    $sql = "INSERT INTO $table_name (roll_no, score) VALUES (?, ?)
-            ON DUPLICATE KEY UPDATE score = VALUES(score)";
+    $sql = "INSERT INTO $table_name (roll_no, score, maths, english) VALUES (?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE score = VALUES(score), maths = VALUES(maths), english = VALUES(english)";
 
     // Prepare the statement
     $stmt = mysqli_prepare($conn, $sql);
 
     // Bind the parameters
-    mysqli_stmt_bind_param($stmt, "sd", $rollNumber, $score);
+    mysqli_stmt_bind_param($stmt, "sddd", $rollNumber, $score, $maths, $english);
 
     // Loop through the submitted form data
     foreach ($_POST['rollNumber'] as $rollNumber) {
         $score = $_POST['score'][$rollNumber];
-
+        $maths = $_POST['maths'][$rollNumber];
+        $english = $_POST['english'][$rollNumber];
         // Execute the statement
         mysqli_stmt_execute($stmt);
     }

@@ -1,4 +1,4 @@
-<?php include("includes/header.php");
+<?php
 superadmin_only(); ?>
 
 <?php

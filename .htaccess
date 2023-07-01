@@ -4,3 +4,6 @@ Options -Indexes
 # Deny access to specific directories
 RewriteEngine On
 RewriteRule ^(actions|assets|functions|gradeforms|includes)/ - [F]
+
+# 404
+ErrorDocument 404 /buda/index.php?page=404

@@ -1,42 +1,23 @@
 <?php include("includes/header.php"); ?>
 
-<!-- if logged in show stats -->
-<?php if (loggedin()) { ?>
-    <!-- welcome the user -->
-    <div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-12 text-center">
-      <h1>Welcome <?php echo(username()); ?> !</h1>
-    </div>
-  </div>
-  <div class="row justify-content-center">
-    <div class="col-12 text-center">
-      <p><?php echo(usertype()); ?></p>
-    </div>
-  </div>
-</div>
-    </div>
-<?php } else { ?>
-    <div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-12 text-center">
-      <h1>Welcome to the TMS!</h1>
-    </div>
-  </div>
-  <div class="row justify-content-center">
-    <div class="col-12 text-center">
-      <p>Please login to continue</p>
-    </div>
-  </div>
-</div>
+<div class="view-area">
 <?php
-}
-?>
 
-<?php
-if (is_super_admin()) {
-    include("includes/stats.php");
+@$page = $_GET['page'];
+
+if($page == "") {
+    $page = "home";
 }
+
+// if the page exists, include it, else show a 404 error
+
+if(file_exists("pages/$page.php")) {
+    include("pages/$page.php");
+} else {
+    include("404.php");
+}
+
 ?>
+</div>
 
 <?php include("includes/footer.php"); ?>

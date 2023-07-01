@@ -1,7 +1,4 @@
-<?php include("includes/header.php"); ?>
-
 <?php
-
 // if logged in redirect to index.php
 if (loggedin()) {
   header("Location: index.php");
@@ -30,6 +27,7 @@ if (isset($_POST['email'])) {
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-lg-6">
+      <h2>Enter your credentials</h2>
       <form action="#" method="POST">
         <div class="form-group">
           <label for="email">Email address</label>
@@ -39,11 +37,9 @@ if (isset($_POST['email'])) {
           <label for="password">Password</label>
           <input type="password" name="password" class="form-control" id="password" placeholder="Password">
         </div>
-        <button type="submit" class="btn btn-primary" name="submit"">Login</button>
+        <button type="submit" class="btn btn-primary" name="submit">Login</button>
       </form>
     </div>
     
   </div>
 </div>
-
-<?php include("includes/footer.php"); ?>

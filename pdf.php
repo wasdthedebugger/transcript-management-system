@@ -107,6 +107,7 @@ $pdf->WriteHTML(generateHTML($data));
 
 $pdf->Output($file_name, $mode);
 
+
 function generateHTML($data)
 {
     $html = <<<EOT

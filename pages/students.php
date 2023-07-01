@@ -1,5 +1,7 @@
 <?php
 
+loggedin_only();
+
 if (isset($_GET['addstudents'])) {
     echo "<div class='sidemenu'>";
     include("addstudents.php");
@@ -20,7 +22,7 @@ if (isset($_GET['addcsv'])) {
 <div class="grade-area">
     <div class="grade-container">
         <div style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Students</div>
-        <label for="batch-filter">Filter by Batch:</label>
+        <label for="batch-filter">Filter by Batch</label>
         <select id="batch-filter" onchange="filterByBatch(this.value)" style="margin-bottom: 20px;">
             <option value="">All</option>
             <?php

@@ -1,5 +1,5 @@
 <?php
-loggedin_only();
+superadmin_only();
 
 $studentCount = 0;
 

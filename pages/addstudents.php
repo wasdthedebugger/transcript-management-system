@@ -1,5 +1,5 @@
 <?php
-loggedin_only();
+superadmin_only();
 
 // Assuming you have a database connection established
 // Handle the form submission

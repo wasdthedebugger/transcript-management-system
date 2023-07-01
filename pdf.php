@@ -5,6 +5,7 @@ require('vendor/autoload.php');
 require('includes/conn.php');
 
 $roll_no = $_GET['roll_no'];
+$mode = $_GET['mode'];
 
 // Fetch personal details from students table
 $sql = "SELECT * FROM students WHERE roll_no = '$roll_no'";
@@ -104,7 +105,7 @@ $pdf = new Mpdf();
 $pdf->SetMargins(0, 0, 7, 0);
 $pdf->WriteHTML(generateHTML($data));
 
-$pdf->Output($file_name, 'D');
+$pdf->Output($file_name, $mode);
 
 function generateHTML($data)
 {
@@ -126,7 +127,7 @@ function generateHTML($data)
             margin: 0;
             padding: 0;
             font-family: 'Roboto', sans-serif;
-            font-size: 0.6em;
+            font-size: 0.55em;
         }
 
         .heading {
@@ -384,7 +385,7 @@ EOT;
                     <div class="ten">
                         <table>
                             <tr>
-                                <td>Grade 9</td>
+                                <td>Grade 10</td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -701,12 +702,15 @@ EOT;
             <tr>
                 <td>11-12th Grade</td>
                 <td>Qualifying Name:</td>
-                <td>National Examinations Board, Nepal</td>
+                <td>General Certificate of Education Advanced Level (GCE A Level)<br>
+                General Certificate of Education Advanced Subsidiary Level (GCE AS Level)
+                </td>
+
             </tr>
             <tr>
                 <td>(Upper Secondary Leaving Examination)</td>
                 <td>Awarding Body:</td>
-                <td>National Examinations Board, Nepal</td>
+                <td>Cambridge Assessment International Education, UK</td>
             </tr>
         </table>
         <div class="desc">
@@ -773,64 +777,46 @@ EOT;
                             <td></td>
                         </tr>
                         <tr class="special">
-                            <td>Absolute</td>
-                            <td>Grade</td>
-                            <td>Grade Point</td>
-                            <td>Description</td>
+                            <td>A Level Grade</td>
+                            <td>PUM Range</td>
+                            <td>AS Level Grade</td>
+                            <td>PUM Range</td>
                         </tr>
                         <tr>
+                            <td>A*</td>
                             <td>90-100</td>
-                            <td>A+</td>
-                            <td>4.0</td>
-                            <td>Outstanding</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <td>80-89</td>
                             <td>A</td>
-                            <td>3.6</td>
-                            <td>Excellent</td>
+                            <td>80-89</td>
+                            <td>a</td>
+                            <td>80-100</td>
                         </tr>
                         <tr>
-                            <td>70-79</td>
-                            <td>B+</td>
-                            <td>3.2</td>
-                            <td>Very Good</td>
-                        </tr>
-                        <tr>
-                            <td>60-69</td>
                             <td>B</td>
-                            <td>2.8</td>
-                            <td>Good</td>
+                            <td>70-79</td>
+                            <td>b</td>
+                            <td>70-79</td>
                         </tr>
                         <tr>
-                            <td>50-59</td>
-                            <td>C+</td>
-                            <td>2.4</td>
-                            <td>Satisfactory</td>
-                        </tr>
-                        <tr>
-                            <td>40-49</td>
                             <td>C</td>
-                            <td>2.0</td>
-                            <td>Acceptable</td>
+                            <td>60-69</td>
+                            <td>c</td>
+                            <td>60-69</td>
                         </tr>
                         <tr>
-                            <td>30-39</td>
-                            <td>D+</td>
-                            <td>1.6</td>
-                            <td>Partially Acceptable</td>
-                        </tr>
-                        <tr>
-                            <td>20-29</td>
                             <td>D</td>
-                            <td>1.2</td>
-                            <td>Insufficient</td>
+                            <td>50-59</td>
+                            <td>d</td>
+                            <td>50-59</td>
                         </tr>
                         <tr>
-                            <td>0-19</td>
                             <td>E</td>
-                            <td>0.8</td>
-                            <td>Very Insufficient</td>
+                            <td>40-49</td>
+                            <td>e</td>
+                            <td>40-49</td>
                         </tr>
                     </table>
                 </div>
@@ -840,7 +826,6 @@ EOT;
 </div>
 <p><b>11<sup>th</sup>-12<sup>th</sup> Grade GPA: {$data->aggregate_alevels->gpa}</b></p>
 </div>
-<hr>
 <div class="sign-area">
 <table>
     <!-- Additional table content -->
@@ -849,7 +834,7 @@ EOT;
 EOT;
     }
     $html .= <<<EOT
-
+<hr style="margin-top: 10px;">
 <div class="sign-area">
     <table style="margin-left: 150px;">
         <tr>

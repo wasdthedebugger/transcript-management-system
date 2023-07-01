@@ -34,38 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $economics = $_POST['economics'][$rollNumber];
         $geography = $_POST['geography'][$rollNumber];
 
-        // Calculate the final grade as the average of all subjects
-        $subjects = array($nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography);
-        $grades = array();
-        $count = 0;
-
-        foreach ($subjects as $subject) {
-            if ($subject !== "") {
-                $tempGrades[] = $subject;
-            }
-        }
-
-        if (!empty($tempGrades)) {
-            $grades = $tempGrades;
-            $count = count($grades);
-        }
-
-        // Calculate the GPA
-        if ($count > 0) {
-            if (in_array(0, $grades)) {
-                $gpa = 0; // Set GPA to 0 if any subject grade is 0
-            } else {
-                $gpa = array_sum($grades) / $count;
-            }
-        } else {
-            $gpa = 0; // Set GPA to 0 if no subjects are passed
-        }
+        // Calculate the final grade and GPA
+        $gpa = schoolNebGPA($nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography);
 
         // Execute the statement
         mysqli_stmt_execute($stmt);
-
-        // Reset the temporary grades array for the next student
-        $tempGrades = array();
     }
 
     // Close the statement

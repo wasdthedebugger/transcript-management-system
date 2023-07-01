@@ -430,10 +430,22 @@ function getNumericGradeNEB($letterGrade)
 }
 
 
-function calculateSchoolNebGpa($grades)
-{
-    $count = count($grades);
+function schoolNebGPA($nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography) {
+    $subjects = array($nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography);
+    $grades = array();
+    $count = 0;
 
+    foreach ($subjects as $subject) {
+        if ($subject !== "") {
+            $grades[] = $subject;
+        }
+    }
+
+    if (!empty($grades)) {
+        $count = count($grades);
+    }
+
+    // Calculate the GPA
     if ($count > 0) {
         if (in_array(0, $grades)) {
             return 0; // Set GPA to 0 if any subject grade is 0
@@ -443,6 +455,91 @@ function calculateSchoolNebGpa($grades)
     } else {
         return 0; // Set GPA to 0 if no subjects are passed
     }
+}
+
+function highSchoolNebGPA($english, $english_pr, $nepali, $nepali_pr, $maths, $maths_pr, $physics, $physics_pr, $chemistry, $chemistry_pr, $computer, $computer_pr, $biology, $biology_pr) {
+    $subjects = array(
+        'english' => 3,
+        'english_pr' => 1,
+        'nepali' => 2.25,
+        'nepali_pr' => 0.75,
+        'maths' => 3.75,
+        'maths_pr' => 1.25,
+        'physics' => 3.75,
+        'physics_pr' => 1.25,
+        'chemistry' => 3.75,
+        'chemistry_pr' => 1.25,
+        'computer' => 2.5,
+        'computer_pr' => 2.5,
+        'biology' => 3.25,
+        'biology_pr' => 1.75
+    );
+
+    $grades = array(
+        'english' => $english,
+        'english_pr' => $english_pr,
+        'nepali' => $nepali,
+        'nepali_pr' => $nepali_pr,
+        'maths' => $maths,
+        'maths_pr' => $maths_pr,
+        'physics' => $physics,
+        'physics_pr' => $physics_pr,
+        'chemistry' => $chemistry,
+        'chemistry_pr' => $chemistry_pr,
+        'computer' => $computer,
+        'computer_pr' => $computer_pr,
+        'biology' => $biology,
+        'biology_pr' => $biology_pr
+    );
+
+    $validGrades = array();
+    $totalCreditHours = 0;
+
+    foreach ($subjects as $subject => $creditHour) {
+        if (isset($grades[$subject])) {
+            $grade = $grades[$subject];
+            if (is_numeric($grade)) {
+                if ($grade == 0) {
+                    return 0; // Return non-grade (0) if any subject has a grade of 0
+                }
+                $validGrades[] = $grade * $creditHour;
+                $totalCreditHours += $creditHour;
+            }
+        }
+    }
+
+    if (empty($validGrades)) {
+        return null; // Return null if no valid grades found
+    }
+
+    $gpa = array_sum($validGrades) / $totalCreditHours;
+    return $gpa;
+}
+
+function aLevelsGPA($elang, $general_paper, $maths, $physics, $chemistry, $business, $economics, $further_maths, $computer, $accounting, $biology) {
+    // Create an array of subjects
+    $subjects = array($elang, $general_paper, $maths, $physics, $chemistry, $business, $economics, $further_maths, $computer, $accounting, $biology);
+
+    // Initialize variables
+    $count = 0;
+    $sum = 0;
+
+    // Loop through subjects and calculate sum and count of non-null values
+    foreach ($subjects as $subject) {
+        if ($subject !== "") {
+            $sum += $subject;
+            $count++;
+        }
+    }
+
+    // Calculate the GPA
+    if ($count > 0) {
+        $gpa = $sum / $count;
+    } else {
+        $gpa = 0;
+    }
+
+    return $gpa;
 }
 
 function getNumericGradeAlevels($letterGrade)

@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nine_neb[] = $data[$i];
           }
           $nine_neb = array_map('getNumericGradeNEB', $nine_neb);
-          $gpa = calculateSchoolNebGpa($nine_neb);
+          $gpa = schoolNebGPA($nine_neb[0], $nine_neb[1], $nine_neb[2], $nine_neb[3], $nine_neb[4], $nine_neb[5], $nine_neb[6], $nine_neb[7], $nine_neb[8], $nine_neb[9]);
 
           // Prepare the SQL statement to insert or update marks in the nine_neb table
           $sql = "INSERT INTO nine_neb (roll_no, nepali, english, maths, science, social, hpe, omaths, computer, economics, geography, gpa) VALUES ('$rollNo', '$nine_neb[0]', '$nine_neb[1]', '$nine_neb[2]', '$nine_neb[3]', '$nine_neb[4]', '$nine_neb[5]', '$nine_neb[6]', '$nine_neb[7]', '$nine_neb[8]', '$nine_neb[9]', '$gpa')";
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ten_neb[] = $data[$i];
           }
           $ten_neb = array_map('getNumericGradeNEB', $ten_neb);
-          $gpa = calculateSchoolNebGpa($ten_neb);
+          $gpa =  $gpa = schoolNebGPA($ten_neb[0], $ten_neb[1], $ten_neb[2], $ten_neb[3], $ten_neb[4], $ten_neb[5], $ten_neb[6], $ten_neb[7], $ten_neb[8], $ten_neb[9]);
 
           // Prepare the SQL statement to insert or update marks in the nine_neb table
           $sql = "INSERT INTO ten_neb (roll_no, nepali, english, maths, science, social, hpe, omaths, computer, economics, geography, gpa) VALUES ('$rollNo', '$ten_neb[0]', '$ten_neb[1]', '$ten_neb[2]', '$ten_neb[3]', '$ten_neb[4]', '$ten_neb[5]', '$ten_neb[6]', '$ten_neb[7]', '$ten_neb[8]', '$ten_neb[9]', '$gpa')";
@@ -88,9 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $eleven_neb[] = $data[$i];
           }
           $eleven_neb = array_map('getNumericGradeNEB', $eleven_neb);
-          $gpa = 4;
-
-
+          $gpa = highSchoolNebGPA($eleven_neb[0], $eleven_neb[1], $eleven_neb[2], $eleven_neb[3], $eleven_neb[4], $eleven_neb[5], $eleven_neb[6], $eleven_neb[7], $eleven_neb[8], $eleven_neb[9], $eleven_neb[10], $eleven_neb[11], $eleven_neb[12], $eleven_neb[13]);
           // Prepare the SQL statement to insert or update marks in the nine_neb table
           $sql = "INSERT INTO eleven_neb (roll_no, english, english_pr, nepali, nepali_pr, maths, maths_pr, physics, physics_pr, chemistry, chemistry_pr, computer, computer_pr, biology, biology_pr, gpa) 
         VALUES ('$rollNo', '$eleven_neb[0]', '$eleven_neb[1]', '$eleven_neb[2]', '$eleven_neb[3]', '$eleven_neb[4]', '$eleven_neb[5]', '$eleven_neb[6]', '$eleven_neb[7]', '$eleven_neb[8]', '$eleven_neb[9]', '$eleven_neb[10]', '$eleven_neb[11]', '$eleven_neb[12]', '$eleven_neb[13]', '$gpa')";
@@ -104,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $twelve_neb[] = $data[$i];
           }
           $twelve_neb = array_map('getNumericGradeNEB', $twelve_neb);
-          $gpa = 4;
+          $gpa = highSchoolNebGPA($twelve_neb[0], $twelve_neb[1], $twelve_neb[2], $twelve_neb[3], $twelve_neb[4], $twelve_neb[5], $twelve_neb[6], $twelve_neb[7], $twelve_neb[8], $twelve_neb[9], $twelve_neb[10], $twelve_neb[11], $twelve_neb[12], $twelve_neb[13]);
 
           // Prepare the SQL statement to insert or update marks in the nine_neb table
           $sql = "INSERT INTO twelve_neb (roll_no, english, english_pr, nepali, nepali_pr, maths, maths_pr, physics, physics_pr, chemistry, chemistry_pr, computer, computer_pr, biology, biology_pr, gpa) 
@@ -158,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <style>
-  .csv-container{
+  .csv-container {
     font-weight: bold;
     padding: 20px;
   }

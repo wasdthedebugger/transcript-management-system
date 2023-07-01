@@ -19,9 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Prepare the statement
     $stmt = mysqli_prepare($conn, $sql);
 
-    // Bind the parameters
-    mysqli_stmt_bind_param($stmt, "sdddddddddddd", $rollNumber, $elang, $general_paper, $maths, $physics, $chemistry, $business, $economics, $further_maths, $biology, $computer, $accounting, $gpa);
-
     // Loop through the submitted form data
     foreach ($_POST['rollNumber'] as $rollNumber) {
         $elang = $_POST['elang'][$rollNumber];
@@ -36,30 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $accounting = $_POST['accounting'][$rollNumber];
         $biology = $_POST['biology'][$rollNumber];
 
-        // Calculate the final grade as the average of all subjects
-        $subjects = array($elang, $general_paper, $maths, $physics, $chemistry, $business, $economics, $further_maths, $computer, $accounting, $biology);
-        $grades = array();
-        $count = 0;
+        // Calculate GPA using the aLevelsGPA function
+        $gpa = aLevelsGPA($elang, $general_paper, $maths, $physics, $chemistry, $business, $economics, $further_maths, $computer, $accounting, $biology);
 
-        foreach ($subjects as $subject) {
-            if ($subject !== "") {
-                $tempGrades[] = $subject;
-            }
-        }
-
-        if (!empty($tempGrades)) {
-            $grades = $tempGrades;
-            $count = count($grades);
-        }
-
-        // Calculate the weight as the sum of all subjects' individual weights
-        $gpa = array_sum($subjects);
+        // Bind the parameters
+        mysqli_stmt_bind_param($stmt, "sdddddddddddd", $rollNumber, $elang, $general_paper, $maths, $physics, $chemistry, $business, $economics, $further_maths, $biology, $computer, $accounting, $gpa);
 
         // Execute the statement
         mysqli_stmt_execute($stmt);
-
-        // Reset the temporary grades array for the next student
-        $tempGrades = array();
     }
 
     // Close the statement

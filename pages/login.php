@@ -24,22 +24,49 @@ if (isset($_POST['email'])) {
 
 ?>
 
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-6">
-      <h2>Enter your credentials</h2>
-      <form action="#" method="POST">
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    </style>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+            <div style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Enter your credentials</div>
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" name="email" id="email" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" placeholder="Password">
+                    </div>
+                    <div style="text-align: center;">
+                        <button type="submit" name="submit">Login</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" name="password" class="form-control" id="password" placeholder="Password">
-        </div>
-        <button type="submit" class="btn btn-primary" name="submit">Login</button>
-      </form>
     </div>
-    
-  </div>
-</div>

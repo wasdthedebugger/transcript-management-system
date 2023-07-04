@@ -32,7 +32,15 @@ include("functions/functions.php");
       <a class="nav-link" href="?page=transcript">Transcript</a>
     </div>
     <div class="user-control-area">
-      <div class="user-control">My Account</div>
+      <div class="user-control">
+        <?php
+        if (!isset($_SESSION['username'])) {
+          echo "Guest";
+        } else {
+          echo $_SESSION['username'];
+        }
+        ?>
+      </div>
 
       <?php if (isset($_SESSION['username'])) : ?>
         <a href="?page=logout" class="nav-link">Logout</a>

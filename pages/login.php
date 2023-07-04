@@ -25,48 +25,71 @@ if (isset($_POST['email'])) {
 ?>
 
 <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
+  .container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-        .container {
-            padding: 20px;
-        }
+  h2 {
+    text-align: center;
+    margin-top: 0;
+  }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+  form {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+  select {
+    padding: 10px;
+  }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
+  input{
+    padding: 10px;
+  }
 
-    </style>
+  .custom-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #d6dfe8;
+    border: none;
+    cursor: pointer;
+    color: red;
+  }
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-            <div style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Enter your credentials</div>
-                <form action="#" method="POST">
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" name="email" id="email" placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Password">
-                    </div>
-                    <div style="text-align: center;">
-                        <button type="submit" name="submit">Login</button>
-                    </div>
-                </form>
-            </div>
+  .form-group{
+    margin-bottom: 20px;
+  }
+
+  .form-div{
+    padding: 40px;
+    background-color: lightgray;
+  }
+
+  label{
+    display: block;
+    margin-bottom: 10px;
+  }
+</style>
+
+<div class="container">
+    <div class="form-div">
+      <div style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Login to TMS</div>
+      <form action="#" method="POST">
+        <div class="form-group">
+          <label for="email">Username</label>
+          <input type="email" name="email" id="email" placeholder="Enter email">
         </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" placeholder="Password">
+        </div>
+        <div>
+          <button type="submit" name="submit" class="custom-button">Login</button>
+        </div>
+      </form>
     </div>
+</div>

@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $biology = $_POST['biology'];
     $biology_pr = $_POST['biology_pr'];
 
-    // Calculate GPA using the highSchoolNebGPA function
-    $gpa = isset($gpa) ? $gpa : 0; // Assign a default value of 0 if $gpa is not set
+    // calculate GPA
+    $gpa = highSchoolNebGPA($english, $english_pr, $nepali, $nepali_pr, $maths, $maths_pr, $physics, $physics_pr, $chemistry, $chemistry_pr, $computer, $computer_pr, $biology, $biology_pr);
 
     // Check if the connection is successful
     if (!$conn) {

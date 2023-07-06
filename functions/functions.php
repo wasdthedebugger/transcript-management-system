@@ -509,7 +509,7 @@ function highSchoolNebGPA($english, $english_pr, $nepali, $nepali_pr, $maths, $m
     }
 
     if (empty($validGrades)) {
-        return null; // Return null if no valid grades found
+        return 0; // Return null if no valid grades found
     }
 
     $gpa = array_sum($validGrades) / $totalCreditHours;

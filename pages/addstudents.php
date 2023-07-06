@@ -72,6 +72,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   .form-group input[type="date"] {
     padding: 10px;
   }
+  .custom-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #d6dfe8;
+        border: none;
+        cursor: pointer;
+        color: red;
+    }
+
+    .custom-button:hover {
+        background-color: #b3c0d1;
+        color: black;
+    }
 </style>
 
 <div class="form-container">

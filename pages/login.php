@@ -49,6 +49,7 @@ if (isset($_POST['email'])) {
 
   input{
     padding: 10px;
+    width: 90%;
   }
 
   .custom-button {
@@ -89,6 +90,7 @@ if (isset($_POST['email'])) {
         </div>
         <div>
           <button type="submit" name="submit" class="custom-button">Login</button>
+          <a class="custom-button" href="msauth">Microsoft Login</a>
         </div>
       </form>
     </div>

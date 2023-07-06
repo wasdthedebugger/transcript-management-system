@@ -176,6 +176,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   .grade-container div a svg {
     vertical-align: middle;
   }
+
+  .custom-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #d6dfe8;
+        border: none;
+        cursor: pointer;
+        color: red;
+    }
+
+    .custom-button:hover {
+        background-color: #b3c0d1;
+        color: black;
+    }
 </style>
 
 <div class="csv-container">

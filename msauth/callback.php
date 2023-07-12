@@ -17,7 +17,7 @@ $_SESSION['email'] = $user->data->getUserPrincipalName();
 
 require("../includes/conn.php");
 // check if user exists in users table, if not, dont insert but set user_type to 0
-$sql = "SELECT * FROM users WHERE email='" . $_SESSION['email'] . "'";
+$sql = "SELECT * FROM msauth WHERE email='" . $_SESSION['email'] . "'";
 $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0) {
   // user exists

@@ -369,7 +369,7 @@ EOT;
     );
 
     foreach ($subjects as $subject => $grade) {
-        if ($grade !== "") { // Check if grade is not empty
+        if ($grade != "") { // Check if grade is not empty
             $html .= <<<EOT
                             <tr>
                                 <td>$subject</td>
@@ -408,7 +408,7 @@ EOT;
     );
 
     foreach ($subjects as $subject => $grade) {
-        if ($grade !== "") { // Check if grade is not empty
+        if ($grade != "") { // Check if grade is not empty
             $html .= <<<EOT
                             <tr>
                                 <td>$subject</td>
@@ -559,7 +559,7 @@ EOT;
         );
 
         foreach ($subjects as $subject => $grade) {
-            if ($grade !== "") { // Check if grade is not empty
+            if ($grade != "") { // Check if grade is not empty
                 $html .= <<<EOT
         <tr>
             <td>$subject</td>
@@ -602,7 +602,7 @@ EOT;
         );
 
         foreach ($subjects as $subject => $grade) {
-            if ($grade !== "") { // Check if grade is not empty
+            if ($grade != "") { // Check if grade is not empty
                 $html .= <<<EOT
         <tr>
             <td>$subject</td>
@@ -754,7 +754,7 @@ EOT;
         );
 
         foreach ($subjects as $subject => $grade) {
-            if ($grade !== "") { // Check if grade is not empty
+            if ($grade != "") { // Check if grade is not empty
                 $html .= <<<EOT
                         <tr>
                             <td>$subject</td>

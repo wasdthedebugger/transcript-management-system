@@ -384,24 +384,24 @@ function getGraduationDate($rollNo, $conn)
 
 function getLetterGradeNEB($numericalGrade)
 {
-    if ($numericalGrade >= 4.0) {
+    if ($numericalGrade == 4.0) {
         return 'A+';
-    } elseif ($numericalGrade >= 3.6) {
+    } elseif ($numericalGrade == 3.6) {
         return 'A';
-    } elseif ($numericalGrade >= 3.2) {
+    } elseif ($numericalGrade == 3.2) {
         return 'B+';
-    } elseif ($numericalGrade >= 2.8) {
+    } elseif ($numericalGrade == 2.8) {
         return 'B';
-    } elseif ($numericalGrade >= 2.4) {
+    } elseif ($numericalGrade == 2.4) {
         return 'C+';
-    } elseif ($numericalGrade >= 2.0) {
+    } elseif ($numericalGrade == 2.0) {
         return 'C';
-    } elseif ($numericalGrade >= 1.6) {
+    } elseif ($numericalGrade == 1.6) {
         return 'D';
-    } elseif ($numericalGrade > 0) {
-        return 'NG';
-    } else {
+    } elseif ($numericalGrade == NULL) {
         return '';
+    }else{
+        return 'NG';
     }
 }
 
@@ -562,14 +562,12 @@ function getNumericGradeAlevels($letterGrade)
         case 'a':
             return 6;
         case 'b':
-            return 5;
-        case 'c':
             return 4;
-        case 'd':
+        case 'c':
             return 3;
-        case 'e':
+        case 'd':
             return 2;
-        case 'u':
+        case 'e':
             return 1;
         default:
             return ''; // or any other default value you prefer
@@ -578,34 +576,37 @@ function getNumericGradeAlevels($letterGrade)
 
 function getLetterGradeAlevels($numericGrade)
 {
-    switch ($numericGrade) {
-        case 12:
-            return 'A*';
-        case 10:
-            return 'A';
-        case 8:
-            return 'B';
-        case 6:
-            return 'C';
-        case 4:
-            return 'D';
-        case 2:
-            return 'E';
-        case 0:
-            return 'U';
-        case 6:
-            return 'a';
-        case 5:
-            return 'b';
-        case 4:
-            return 'c';
-        case 3:
-            return 'd';
-        case 2:
-            return 'e';
-        case 1:
-            return 'u';
-        default:
-            return ''; // or any other default value you prefer
+    if ($numericGrade == 12) {
+        return 'A*';
+    } elseif ($numericGrade === 10) {
+        return 'A';
+    } elseif ($numericGrade === 8) {
+        return 'B';
+    } elseif ($numericGrade === 6) {
+        return 'C';
+    } elseif ($numericGrade === 4) {
+        return 'D';
+    } elseif ($numericGrade === 2) {
+        return 'E';
+    } elseif ($numericGrade === 0) {
+        return 'U';
+    } elseif ($numericGrade === 6) {
+        return 'a';
+    } elseif ($numericGrade === 5) {
+        return 'b';
+    } elseif ($numericGrade === 4) {
+        return 'c';
+    } elseif ($numericGrade === 3) {
+        return 'd';
+    } elseif ($numericGrade === 2) {
+        return 'e';
+    } else {
+        return;
     }
+}
+
+function deleteAccount($id, $conn){
+    $sql = "DELETE FROM msauth WHERE id = '$id'";
+    $result = mysqli_query($conn, $sql);
+    return !!$result;
 }

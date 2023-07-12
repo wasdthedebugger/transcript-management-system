@@ -61,6 +61,10 @@ if (isset($_POST['email'])) {
     color: red;
   }
 
+  .custom-button:hover {
+    background-color: #b3c0d1;
+  }
+
   .form-group{
     margin-bottom: 20px;
   }

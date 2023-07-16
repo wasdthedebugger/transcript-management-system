@@ -249,20 +249,20 @@ function entryFieldsGrade($standard, $system, $tableName, $conn)
                                         ?>
                                             <select style="width: 70px;" class="form-control" name="<?php echo $column . '[' . $rollNumber . ']'; ?>">
                                                 <option value="12" <?php if ($value === '12') echo 'selected'; ?>>A*</option>
-                                                <option value="10" <?php if ($value === '10') echo 'selected'; ?>>A</option>
-                                                <option value="8" <?php if ($value === '8') echo 'selected'; ?>>B</option>
-                                                <option value="6" <?php if ($value === '6') echo 'selected'; ?>>C</option>
-                                                <option value="4" <?php if ($value === '4') echo 'selected'; ?>>D</option>
-                                                <option value="2" <?php if ($value === '2') echo 'selected'; ?>>E</option>
-                                                <option value="0" <?php if ($value === '0') echo 'selected'; ?>>U</option>
+                                                <option value="11" <?php if ($value === '11') echo 'selected'; ?>>A</option>
+                                                <option value="10" <?php if ($value === '10') echo 'selected'; ?>>B</option>
+                                                <option value="9" <?php if ($value === '9') echo 'selected'; ?>>C</option>
+                                                <option value="8" <?php if ($value === '8') echo 'selected'; ?>>D</option>
+                                                <option value="7" <?php if ($value === '7') echo 'selected'; ?>>E</option>
                                                 <option value="6" <?php if ($value === '6') echo 'selected'; ?>>a</option>
                                                 <option value="5" <?php if ($value === '5') echo 'selected'; ?>>b</option>
                                                 <option value="4" <?php if ($value === '4') echo 'selected'; ?>>c</option>
                                                 <option value="3" <?php if ($value === '3') echo 'selected'; ?>>d</option>
                                                 <option value="2" <?php if ($value === '2') echo 'selected'; ?>>e</option>
-                                                <option value="1" <?php if ($value === '1') echo 'selected'; ?>>u</option>
+                                                <option value="0" <?php if ($value === '0') echo 'selected'; ?>>U</option>
                                                 <option value="" <?php if ($value === '') echo 'selected'; ?>>No</option>
                                             </select>
+
                                         <?php
                                         }
                                         ?>
@@ -400,7 +400,7 @@ function getLetterGradeNEB($numericalGrade)
         return 'D';
     } elseif ($numericalGrade == NULL) {
         return '';
-    }else{
+    } else {
         return 'NG';
     }
 }
@@ -423,14 +423,15 @@ function getNumericGradeNEB($letterGrade)
         case 'D':
             return 1.6;
         case 'NG':
-            return 0.0;
+            return 0;
         default:
             return '';
     }
 }
 
 
-function schoolNebGPA($nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography) {
+function schoolNebGPA($nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography)
+{
     $subjects = array($nepali, $english, $maths, $social, $hpe, $omaths, $computer, $economics, $geography);
     $grades = array();
     $count = 0;
@@ -457,66 +458,38 @@ function schoolNebGPA($nepali, $english, $maths, $social, $hpe, $omaths, $comput
     }
 }
 
-function highSchoolNebGPA($english, $english_pr, $nepali, $nepali_pr, $maths, $maths_pr, $physics, $physics_pr, $chemistry, $chemistry_pr, $computer, $computer_pr, $biology, $biology_pr) {
-    $subjects = array(
-        'english' => 3,
-        'english_pr' => 1,
-        'nepali' => 2.25,
-        'nepali_pr' => 0.75,
-        'maths' => 3.75,
-        'maths_pr' => 1.25,
-        'physics' => 3.75,
-        'physics_pr' => 1.25,
-        'chemistry' => 3.75,
-        'chemistry_pr' => 1.25,
-        'computer' => 2.5,
-        'computer_pr' => 2.5,
-        'biology' => 3.25,
-        'biology_pr' => 1.75
-    );
+function highSchoolNebGPA($english, $english_pr, $nepali, $nepali_pr, $maths, $maths_pr, $physics, $physics_pr, $chemistry, $chemistry_pr, $computer, $computer_pr, $biology, $biology_pr)
+{
+    $subjects = array($english, $english_pr, $nepali, $nepali_pr, $maths, $maths_pr, $physics, $physics_pr, $chemistry, $chemistry_pr, $computer, $computer_pr, $biology, $biology_pr);
+    $grades = array();
+    $count = 0;
 
-    $grades = array(
-        'english' => $english,
-        'english_pr' => $english_pr,
-        'nepali' => $nepali,
-        'nepali_pr' => $nepali_pr,
-        'maths' => $maths,
-        'maths_pr' => $maths_pr,
-        'physics' => $physics,
-        'physics_pr' => $physics_pr,
-        'chemistry' => $chemistry,
-        'chemistry_pr' => $chemistry_pr,
-        'computer' => $computer,
-        'computer_pr' => $computer_pr,
-        'biology' => $biology,
-        'biology_pr' => $biology_pr
-    );
-
-    $validGrades = array();
-    $totalCreditHours = 0;
-
-    foreach ($subjects as $subject => $creditHour) {
-        if (isset($grades[$subject])) {
-            $grade = $grades[$subject];
-            if (is_numeric($grade)) {
-                if ($grade == 0) {
-                    return 0; // Return non-grade (0) if any subject has a grade of 0
-                }
-                $validGrades[] = $grade * $creditHour;
-                $totalCreditHours += $creditHour;
-            }
+    foreach ($subjects as $subject) {
+        if ($subject !== "") {
+            $grades[] = $subject;
         }
     }
 
-    if (empty($validGrades)) {
-        return 0; // Return null if no valid grades found
+    if (!empty($grades)) {
+        $count = count($grades);
     }
 
-    $gpa = array_sum($validGrades) / $totalCreditHours;
-    return $gpa;
+    // Calculate the GPA
+    if ($count > 0) {
+        if (in_array(0, $grades)) {
+            return 0; // Set GPA to 0 if any subject grade is 0
+        } else {
+            return array_sum($grades) / $count;
+        }
+    } else {
+        return 0; // Set GPA to 0 if no subjects are passed
+    }
+
+    
 }
 
-function aLevelsGPA($elang, $general_paper, $maths, $physics, $chemistry, $business, $economics, $further_maths, $computer, $accounting, $biology) {
+function aLevelsGPA($elang, $general_paper, $maths, $physics, $chemistry, $business, $economics, $further_maths, $computer, $accounting, $biology)
+{
     // Create an array of subjects
     $subjects = array($elang, $general_paper, $maths, $physics, $chemistry, $business, $economics, $further_maths, $computer, $accounting, $biology);
 
@@ -548,29 +521,29 @@ function getNumericGradeAlevels($letterGrade)
         case 'A*':
             return 12;
         case 'A':
-            return 10;
+            return 11;
         case 'B':
-            return 8;
+            return 10;
         case 'C':
-            return 6;
+            return 9;
         case 'D':
-            return 4;
+            return 8;
         case 'E':
-            return 2;
-        case 'U':
-            return 0;
+            return 7;
         case 'a':
             return 6;
         case 'b':
-            return 4;
+            return 5;
         case 'c':
-            return 3;
+            return 4;
         case 'd':
-            return 2;
+            return 3;
         case 'e':
-            return 1;
+            return 2;
+        case 'U':
+            return 0;
         default:
-            return ''; // or any other default value you prefer
+            return '';
     }
 }
 
@@ -578,34 +551,35 @@ function getLetterGradeAlevels($numericGrade)
 {
     if ($numericGrade == 12) {
         return 'A*';
-    } elseif ($numericGrade === 10) {
+    } elseif ($numericGrade == 11) {
         return 'A';
-    } elseif ($numericGrade === 8) {
+    } elseif ($numericGrade == 10) {
         return 'B';
-    } elseif ($numericGrade === 6) {
+    } elseif ($numericGrade == 9) {
         return 'C';
-    } elseif ($numericGrade === 4) {
+    } elseif ($numericGrade == 8) {
         return 'D';
-    } elseif ($numericGrade === 2) {
+    } elseif ($numericGrade == 7) {
         return 'E';
-    } elseif ($numericGrade === 0) {
-        return 'U';
-    } elseif ($numericGrade === 6) {
+    } elseif ($numericGrade == 6) {
         return 'a';
-    } elseif ($numericGrade === 5) {
+    } elseif ($numericGrade == 5) {
         return 'b';
-    } elseif ($numericGrade === 4) {
+    } elseif ($numericGrade == 4) {
         return 'c';
-    } elseif ($numericGrade === 3) {
+    } elseif ($numericGrade == 3) {
         return 'd';
-    } elseif ($numericGrade === 2) {
+    } elseif ($numericGrade == 2) {
         return 'e';
+    } elseif ($numericGrade == NULL) {
+        return '';
     } else {
-        return;
+        return 'U';
     }
 }
 
-function deleteAccount($id, $conn){
+function deleteAccount($id, $conn)
+{
     $sql = "DELETE FROM msauth WHERE id = '$id'";
     $result = mysqli_query($conn, $sql);
     return !!$result;

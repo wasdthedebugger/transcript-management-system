@@ -7,25 +7,6 @@ $system = 0;
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Get the form data
-    $english = $_POST['english'];
-    $english_pr = $_POST['english_pr'];
-    $nepali = $_POST['nepali'];
-    $nepali_pr = $_POST['nepali_pr'];
-    $maths = $_POST['maths'];
-    $maths_pr = $_POST['maths_pr'];
-    $physics = $_POST['physics'];
-    $physics_pr = $_POST['physics_pr'];
-    $chemistry = $_POST['chemistry'];
-    $chemistry_pr = $_POST['chemistry_pr'];
-    $computer = $_POST['computer'];
-    $computer_pr = $_POST['computer_pr'];
-    $biology = $_POST['biology'];
-    $biology_pr = $_POST['biology_pr'];
-
-    // Calculate GPA using the highSchoolNebGPA function
-    $gpa = isset($gpa) ? $gpa : 0; // Assign a default value of 0 if $gpa is not set
-
     // Check if the connection is successful
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
@@ -45,6 +26,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Loop through the submitted form data
     foreach ($_POST['rollNumber'] as $rollNumber) {
+
+        $english = $_POST['english'][$rollNumber];
+        $english_pr = $_POST['english_pr'][$rollNumber];
+        $nepali = $_POST['nepali'][$rollNumber];
+        $nepali_pr = $_POST['nepali_pr'][$rollNumber];
+        $maths = $_POST['maths'][$rollNumber];
+        $maths_pr = $_POST['maths_pr'][$rollNumber];
+        $physics = $_POST['physics'][$rollNumber];
+        $physics_pr = $_POST['physics_pr'][$rollNumber];
+        $chemistry = $_POST['chemistry'][$rollNumber];
+        $chemistry_pr = $_POST['chemistry_pr'][$rollNumber];
+        $computer = $_POST['computer'][$rollNumber];
+        $computer_pr = $_POST['computer_pr'][$rollNumber];
+        $biology = $_POST['biology'][$rollNumber];
+        $biology_pr = $_POST['biology_pr'][$rollNumber];
+
+        $gpa = highSchoolNebGPA($english, $english_pr, $nepali, $nepali_pr, $maths, $maths_pr, $physics, $physics_pr, $chemistry, $chemistry_pr, $computer, $computer_pr, $biology, $biology_pr);
 
         // Bind the parameters
         mysqli_stmt_bind_param($stmt, "sddddddddddddddd", $rollNumber, $english, $english_pr, $nepali, $nepali_pr, $maths, $maths_pr, $physics, $physics_pr, $chemistry, $chemistry_pr, $computer, $computer_pr, $biology, $biology_pr, $gpa);
